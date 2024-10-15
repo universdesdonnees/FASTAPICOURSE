@@ -1,0 +1,334 @@
+---
+title: Lab 3 - Deployment and Production Considerations
+author: Ményssa Cherifa-Luron  
+date: today
+---
+
+## Overview
+
+In this notebook, you will develop a strong foundational understanding of FastAPI and its capabilities in various contexts, including **machine learning, image processing, and social media interaction.**
+
+## Goals
+
+By the end of this lab, you should be able to:
+
+- Understand the process of deploying a FastAPI application on Heroku, including setting up environment configurations, creating necessary files, and troubleshooting deployment issues.
+- Learn to add new endpoints to an existing FastAPI application, allowing for image uploads and processing.
+- Gain practical experience in handling images within a web application, including uploading, processing, and generating outputs based on user input.
+- Gain experience in fetching and processing data from external APIs, specifically fetching tweets based on search queries.
+
+## Prerequisites
+
+Ensure you have FastAPI, SQLAlchemy (or SQLModel), Pydantic, and other necessary libraries installed. You’ll also need access to Python and a terminal
+
+## 1. Build an API for Predictions and Deploy on Heroku
+
+### Step 1: Set Up Your Environment
+
+1. **Create a New Directory**: Open your terminal and create a new directory for your project.
+```bash
+mkdir fastapi_prediction_api
+cd fastapi_prediction_api
+```
+
+2. **Set Up a Virtual Environment**: It’s a good practice to use a virtual environment for your projects. You can use `venv` for this.
+```bash
+python3 -m venv venv
+source venv/bin/activate  # For Linux or Mac
+venv\Scripts\activate  # For Windows
+```
+
+3. **Install Required Libraries**: Install FastAPI, Uvicorn, and libraries for machine learning.
+```bash
+pip install fastapi uvicorn scikit-learn joblib numpy
+```
+
+### Step 2: Prepare Your Machine Learning Model
+
+1. **Choose a Dataset**: For this exercise, we will use the classic Iris dataset, which is commonly used for classification tasks. You can download it from [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/iris) or directly use it from `sklearn`.
+
+2. **Train a Simple Model**: Create a new Python file named `train_model.py`to train a logistic regression model on the Iris dataset
+
+3. **Run the Model Training Script**: Execute the script to train the model and save it.
+
+```bash
+python train_model.py
+```
+
+### Step 3: Create the FastAPI Application
+
+1. **Create the FastAPI App**: Create a new Python file named `main.py` to define your FastAPI application.
+
+2. **Load Your Model**: load the trained model and create an API endpoint for predictions.
+
+3. **Define Input Format**: The input format for the `/predict` endpoint should be a list of four numeric values representing the features of the Iris flower: sepal length, sepal width, petal length, and petal width.
+
+### Step 4: Test Your API Locally
+
+1. **Run Your FastAPI Application**: Start your FastAPI app using Uvicorn.
+```bash
+uvicorn main:app --reload
+```
+
+2. **Access the Interactive API Documentation**: Open your browser and navigate to `http://127.0.0.1:8000/docs`. This will open the Swagger UI, where you can test your API.
+
+3. **Send a Test Request**:
+- Click on the `/predict` endpoint in the Swagger UI.
+- Click on "Try it out" and input the following sample data: 
+```json
+[5.1, 3.5, 1.4, 0.2]
+```
+- Click "Execute" to send the request. You should get a response like this:
+```json
+{"prediction": 0}
+```
+This indicates that the API predicts the flower belongs to class 0 (Iris Setosa).
+
+### Step 5: Prepare for Heroku Deployment
+
+1. **Create a `requirements.txt` File**: This file lists all the dependencies your application needs. You can generate it automatically using:
+```bash
+pip freeze > requirements.txt
+```
+
+2. **Create a `Procfile`**: This file tells Heroku how to run your application. Create a new file named `Procfile` (with no extension) in your project directory and add the following line:
+```
+web: uvicorn main:app --host 0.0.0.0 --port ${PORT}
+```
+
+3. **Create a `runtime.txt` File**: Specify the Python version by creating a file named `runtime.txt` and adding your desired version, for example:
+```
+python-3.9.10
+```
+
+### Step 6: Deploy to Heroku
+
+1. **Install the Heroku CLI**: If you haven't already, install the Heroku CLI from [Heroku's official website](https://devcenter.heroku.com/articles/heroku-cli).
+
+2. **Log in to Heroku**: Open your terminal and log into your Heroku account.
+```bash
+heroku login
+```
+
+3. **Create a New Heroku App**: Create a new Heroku app by running the following command. Replace `your-app-name` with a unique name for your app.
+```bash
+heroku create your-app-name
+```
+
+4. **Deploy Your App**:
+- First, initialize a Git repository if you haven’t already:
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+- Then, deploy your application to Heroku:
+```bash
+git push heroku master
+```
+
+5. **Open Your App**: Once the deployment is complete, you can open your app in the browser using:
+```bash
+heroku open
+```
+
+### Step 7: Test Your API on Heroku
+
+1. **Access the Heroku API URL**: Your FastAPI application will now be accessible at the URL provided by Heroku. You can access the interactive API documentation by navigating to:
+```
+https://your-app-name.herokuapp.com/docs
+```
+
+2. **Send a Test Request**:
+- Click on the `/predict` endpoint in the Swagger UI on Heroku.
+- Click on "Try it out" and input the following sample data: 
+```json
+[5.1, 3.5, 1.4, 0.2]
+```
+- Click "Execute" to send the request. You should receive a response similar to:
+```json
+{"prediction": 0}
+```
+
+### Step 8: Additional Challenges
+
+- **Expand the Model**: Train a more complex model using additional features or different algorithms (e.g., Random Forest, SVM).
+- **Add Error Handling**: Implement error handling to manage invalid inputs and return meaningful error messages.
+- **Enhance the API**: Add more endpoints for different functionalities, such as model evaluation or data visualization.
+- **Implement Logging**: Integrate logging to monitor requests and track performance.
+Let's construct a detailed notebook for the first module on the FastAPI framework, specifically focusing on working with a FastAPI application that serves a Stable Diffusion model. This will guide your students through the process while providing the necessary code examples and project structure.
+
+# 2. Integrating with the Twitter API 
+
+### Step 1: Set Up Twitter API Access
+
+**Task:** Obtain access to the Twitter API.
+
+1. **Create a Twitter Developer Account:** Visit the [Twitter Developer portal](https://developer.twitter.com/) and sign up for a developer account if you don't have one.
+
+2. **Create a New Application:**
+- After setting up your account, create a new application to obtain your API keys and access tokens. This process will provide you with:
+- `TWITTER_CONSUMER_KEY`
+- `TWITTER_CONSUMER_SECRET`
+- `TWITTER_ACCESS_TOKEN`
+- `TWITTER_ACCESS_TOKEN_SECRET`
+
+### Step 2: Install Required Libraries
+
+**Task:** Install the necessary libraries for the project.
+
+1. **Open your terminal and run the following command to install `tweepy`, `fastapi`, and `uvicorn`:**
+
+```bash
+pip install tweepy fastapi uvicorn
+```
+
+### Step 3: Create the FastAPI Application
+
+**Task:** Set up the FastAPI application and Twitter API client.
+
+1. **Create a new Python file named `twitter_api.py`.**
+
+2. **Set Up FastAPI and Twitter API Client:**
+
+```python
+from fastapi import FastAPI, HTTPException
+import tweepy
+import os
+
+app = FastAPI()
+
+# Twitter API credentials
+consumer_key = os.getenv("TWITTER_CONSUMER_KEY")  # Set these environment variables in your system
+consumer_secret = os.getenv("TWITTER_CONSUMER_SECRET")
+access_token = os.getenv("TWITTER_ACCESS_TOKEN")
+access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+
+# Authenticate to Twitter
+auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
+api = tweepy.API(auth)
+
+@app.get("/tweets")
+async def get_tweets(query: str, count: int = 10):
+    """
+    Fetch tweets based on a search query.
+    Parameters:
+    - query: The search query string
+    - count: The number of tweets to return (default is 10)
+    """
+    try:
+        tweets = api.search(q=query, count=count)
+        return [{"tweet": tweet.text, "user": tweet.user.screen_name, "created_at": tweet.created_at} for tweet in tweets]
+    except tweepy.TweepError as e:
+        raise HTTPException(status_code=500, detail="Error fetching tweets: " + str(e))
+```
+
+### Step 4: Test Your Twitter API Integration
+
+**Task:** Run and test your FastAPI application.
+
+1. **Run Your FastAPI Application:**
+
+```bash
+uvicorn twitter_api:app --reload
+```
+
+2. **Access the Interactive API Documentation:** Open your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs). This will open the Swagger UI.
+
+3. **Send a Test Request:**
+- Click on the `/tweets` endpoint in the Swagger UI.
+- Click on "Try it out" and input a search query. For example, you could search for tweets containing the hashtag `#Python`.
+
+   **Example input for the query:**
+
+```plaintext
+query: "#Python"
+count: 5
+```
+
+- Click "Execute" to send the request. You should receive a response with a list of tweets that match your query.
+
+**Example Response:**
+
+```json
+[
+    {
+        "tweet": "Python is an amazing programming language!",
+        "user": "coder123",
+        "created_at": "2024-10-14T12:34:56Z"
+    },
+    {
+        "tweet": "Check out my new Python project!",
+        "user": "dev_gal",
+        "created_at": "2024-10-14T12:35:10Z"
+    }
+]
+```
+
+### Step 5: Additional Challenges
+
+**Task:** Enhance the functionality of your Twitter API integration.
+
+1. **Pagination:** Implement pagination to allow users to fetch more tweets beyond the initial count. You can add parameters for pagination tokens or `max_id` to fetch older tweets.
+
+**Example code for pagination:**
+
+```python
+@app.get("/tweets")
+async def get_tweets(query: str, count: int = 10, max_id: int = None):
+    try:
+        tweets = api.search(q=query, count=count, max_id=max_id)
+        return [{"tweet": tweet.text, "user": tweet.user.screen_name, "created_at": tweet.created_at} for tweet in tweets]
+    except tweepy.TweepError as e:
+        raise HTTPException(status_code=500, detail="Error fetching tweets: " + str(e))
+```
+
+2. **Filter by Language:** Add functionality to filter tweets by language using the `lang` parameter in the Twitter API. 
+
+   **Example code for language filtering:**
+
+```python
+@app.get("/tweets")
+async def get_tweets(query: str, count: int = 10, lang: str = None):
+    try:
+        tweets = api.search(q=query, count=count, lang=lang)
+        return [{"tweet": tweet.text, "user": tweet.user.screen_name, "created_at": tweet.created_at} for tweet in tweets]
+    except tweepy.TweepError as e:
+        raise HTTPException(status_code=500, detail="Error fetching tweets: " + str(e))
+```
+
+3. **Sentiment Analysis:** Integrate a sentiment analysis library (like `TextBlob` or `VADER`) to analyze the sentiment of the fetched tweets and return that information in the response.
+
+   **Example code for sentiment analysis using TextBlob:**
+
+```python
+from textblob import TextBlob
+
+@app.get("/tweets")
+async def get_tweets(query: str, count: int = 10):
+    try:
+        tweets = api.search(q=query, count=count)
+        results = []
+        for tweet in tweets:
+            analysis = TextBlob(tweet.text)
+            results.append({
+                "tweet": tweet.text,
+                "user": tweet.user.screen_name,
+                "created_at": tweet.created_at,
+                "sentiment": analysis.sentiment.polarity  # Adding sentiment polarity
+            })
+        return results
+    except tweepy.TweepError as e:
+        raise HTTPException(status_code=500, detail="Error fetching tweets: " + str(e))
+```
+
+### Project Structure
+Here’s a suggested project structure for your FastAPI Twitter application:
+
+```
+fastapi_twitter_integration/
+├── twitter_api.py               # Main application file
+├── requirements.txt              # Dependency file
+└── README.md                     # Project documentation
+```

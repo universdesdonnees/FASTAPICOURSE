@@ -1,0 +1,72 @@
+project:
+  type: website
+
+website:
+  title: "FastAPICourse"
+  sidebar:
+    background: "#D9E3E4"
+    logo: "images/course_cover.png"
+    pinned: true
+    align: center
+    tools:
+      - icon: github
+        href: https://github.com/universdesdonnees
+        text: "GitHub organization"
+      - icon: linkedin
+        href: https://www.linkedin.com/in/menyssacherifaluron/
+        text: "Menyssa's Linkedin"
+
+    style: "docked"
+    search: true
+    collapse-level: 1
+    contents:
+      - section: "Course information"
+        contents:
+          - href: index.qmd
+            text: "Getting Started"
+          - href: Syllabus.qmd
+            text: Syllabus
+          - href: Prerequisites.qmd
+            text: Prerequisites
+      - section: "Lectures"
+        contents:
+          - href: 00_Lectures/index.qmd
+            text: Notes
+          - href: 00_Lectures/01_Lecture.qmd
+            text: 1. Introduction to FastAPI & Development Setup
+          - href: 00_Lectures/02_Lecture.qmd
+            text: 2. Building Scalable and Efficient FastAPI Applications
+          - href: 00_Lectures/03_Lecture.qmd
+            text: 3. Deployment and Production Considerations
+      - section: "Exercices"
+        contents:
+          - href: 01_Exercises/index.qmd
+            text: Notes
+          - href: 01_Exercises/01_Lab.qmd
+            text: Lab 1
+          - href: 01_Exercises/02_Lab.qmd
+            text: Lab 2
+          - href: 01_Exercises/03_Lab.qmd
+            text: Lab 3
+      - section: "Instructors"
+        contents:
+          - href: 02_Instructors/index.qmd
+            text: Notes
+  page-footer:
+    center: |
+      {{< fa brands creative-commons >}} 2024 par [Ményssa Cherifa-Luron](https://www.linkedin.com/in/menyssacherifaluron/)
+    left: 'Contenu adapté de [STA 210: Regression Analysis](https://sta210-s22.github.io/website/)<br> Tout le contenu est sous licence {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}} [Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC
+      4.0)](https://creativecommons.org/licenses/by-nc/4.0/)'
+    right: 'Fait avec {{< fa brands python >}} et [Quarto](https://quarto.org/)<br> 
+    [Voir sur {{< fa brands github >}} GitHub](https://github.com/universdesdonnees/FASTAPICOURSE)'
+
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    theme: 
+      light: 
+        - flatly
+        - styles.scss

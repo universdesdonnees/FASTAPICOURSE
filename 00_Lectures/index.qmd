@@ -1,0 +1,41 @@
+---
+title: 📚 Lectures
+---
+
+## Great News, Students!
+The full FastAPI course is now available for you to download.
+
+<div style="text-align: center;">
+  <figure>  
+    <button class="download-btn" onclick="window.location.href='lectures.pdf'">Download the Full Course</button>  
+  </figure>
+</div>
+
+Dive into the material and enhance your skills in building efficient APIs!
+
+## Lecture 1 - Introduction to FastAPI & Development Setup
+Dive into the basics of **APIs**, explore the **HTTP protocol**, and learn how the **Request/Response Cycle** works. 
+
+By the end, you’ll have a solid understanding of how APIs power modern applications and how FastAPI fits into the picture.
+
+### Resources
+- [Lecture 1](/00_Lectures/01_Lecture.qmd) 🎓
+- [Live Coding Playlist 1](https://www.youtube.com/watch?v=XnYYwcOfcn8&list=PLqAmigZvYxIL9dnYeZEhMoHcoP4zop8-p&ab_channel=JVPDesign) 🎥
+- [Audio Overview 1](/00_Lectures/01_Podcast.wav) 🔊
+
+## Lecture 2 -Building Scalable and Efficient FastAPI Applications
+Unlock the **Key Features of FastAPI** and discover the magic of **Asynchronous Programming**. We’ll explore how FastAPI manages requests and connects seamlessly to databases—taking your API development skills to the next level!
+
+### Resources
+- [Lecture 2](/00_Lectures/02_Lecture.qmd) 🎓
+- [Live Coding Playlist 2](https://www.youtube.com/watch?v=TO4aQ3ghFOc&t=3593s&ab_channel=SsaliJonathan) 🎥 (from 01:23:00 to the end)
+- [Audio Overview 2](/00_Lectures/02_Podcast.wav) 🔊
+
+## Lecture 3 - Deployment and Production Considerations
+
+This hands-on course takes you on an intergalactic journey through the process of deploying machine learning applications in a cloud environment using Docker and GitHub Actions on the Heroku platform. We'll cover the fundamental concepts, tools, and techniques needed to build a robust CI/CD pipeline for automated deployments. 
+
+### Resources
+- [Lecture 3](/00_Lectures/03_Lecture.qmd) 🎓
+- [Live Coding Playlist 3](https://www.youtube.com/watch?v=Gs15V79cauo&t=1108s&ab_channel=KrishNaik) 🎥
+- [Audio Overview 3](/00_Lectures/03_Podcast.wav) 🔊

@@ -1,0 +1,36 @@
+---
+title: Lab 3 - Deployment and Production Considerations
+subtitle: Solutions
+author: Ményssa Cherifa-Luron  
+date: today
+---
+
+## Overview
+
+In this lab, students will delve into the deployment and enhancement of FastAPI applications, focusing on practical applications in machine learning, image processing, and social media interaction. 
+
+This lab will not only teach students how to build and deploy an API but also how to extend its functionality and make it robust and scalable.
+
+May the code be with them! 🌟
+
+## Goals
+
+You will help students achieve the following:
+
+- Understand the deployment process of a FastAPI application on Heroku, including environment setup, file creation, and troubleshooting.
+- Learn to extend an existing FastAPI application with new endpoints for functionalities such as image uploads and processing.
+- Gain hands-on experience with handling images in a web application environment, including uploading, processing, and generating outputs.
+- Acquire skills in fetching and processing data from external APIs, focusing on tasks such as retrieving tweets based on specific queries.
+
+## IRIS API
+
+[The full project solution is available here](https://github.com/universdesdonnees/iris_api)
+
+## Twitter API 
+
+*The full project solution folder will be available soon*
+
+
+
+
+

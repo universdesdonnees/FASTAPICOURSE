@@ -1,0 +1,119 @@
+---
+title: 📑 Instructors
+subtitle: "HealthPredictor: A Healthcare Machine Learning Application"
+---
+
+Welcome to the **HealthPredictor Project** guide! 
+
+This document outlines the framework for delivering the **HealthPredictor project**, designed for students to develop a comprehensive full-stack healthcare application. 
+
+This project combines machine learning, FastAPI for the backend, and a modern frontend framework. Through this experience, students will gain valuable insights and hands-on skills relevant to real-world healthcare challenges.
+
+## Project Objectives
+
+By the end of this project, students will be able to:
+
+1. **Develop a FastAPI application** with machine learning capabilities to predict health risks based on user input.
+2. **Create a responsive frontend** using a JavaScript framework (React, Vue.js, or Angular) that interacts seamlessly with the backend.
+3. **Implement RESTful API endpoints** for data management and predictions.
+4. **Deploy the application** using Docker and set up Continuous Integration/Continuous Deployment (CI/CD) pipelines for automated deployment.
+5. **Apply best practices in software development**, including code organization, documentation, and testing methodologies.
+
+## Project Structure and Phases
+
+[The FastAPI FullStack template](https://github.com/fastapi/full-stack-fastapi-template)
+
+### Phase 1: Research and Planning (1 week)
+
+- **Activities**:
+  - Students select a healthcare dataset (e.g., heart disease, diabetes, or other relevant datasets).
+  - Outline the features and functionalities of the application, including user input forms and prediction results.
+  - Design the database schema, ensuring it meets the application's requirements.
+
+- **Deliverables**:
+  - **Dataset Selection Document**: Justification for the chosen dataset and its relevance to the project.
+  - **Project Feature List**: A comprehensive list of features and functionalities.
+  - **Initial Wireframe Designs**: Mockups of the user interface and user experience.
+  - **Database Schema Diagram**: Visual representation of the database structure.
+
+### Phase 2: Backend Development (2 weeks)
+
+- **Activities**:
+  - Develop the FastAPI application to handle backend logic.
+  - Create scripts for building and training machine learning models using libraries like scikit-learn or TensorFlow.
+  - Implement SQLAlchemy for database management, ensuring proper connections to the selected relational database (e.g., PostgreSQL or SQLite).
+
+- **Deliverables**:
+  - **FastAPI Application Code**: Codebase for the backend with endpoints for model training, predictions, and CRUD operations.
+  - **API Documentation**: Auto-generated documentation using Swagger, including endpoint specifications.
+  - **Database Migration Scripts**: Scripts to set up the database schema and tables.
+
+### Phase 3: Frontend Development (2 weeks)
+
+- **Activities**:
+  - Build the user interface using Streamlit, React, Vue.js, or Angular, ensuring it is intuitive and user-friendly.
+  - Integrate the frontend with the FastAPI backend using Axios or Fetch API for data transmission.
+  - Implement data visualization components to present prediction results and insights.
+
+- **Deliverables**:
+  - **Frontend Codebase**: Complete code for the user interface.
+  - **User Interface Designs**: Documentation on UI components and their functionalities.
+  - **API Integration Documentation**: Guidelines on how the frontend interacts with the backend.
+
+### Phase 4: Testing and Deployment (1 week)
+
+- **Activities**:
+  - Conduct thorough testing of the application for functionality, usability, and performance.
+  - Containerize both backend and frontend applications using Docker to simplify deployment.
+  - Deploy the applications to cloud platforms (e.g., AWS, Heroku, or Azure) and set up CI/CD pipelines using GitHub Actions or similar tools.
+
+- **Deliverables**:
+  - **Test Cases and Results**: Documentation of testing strategies and results obtained.
+  - **Dockerfiles**: Configuration files for containerizing both applications.
+  - **Deployment Instructions**: Comprehensive guidelines for deploying the application, including CI/CD pipeline configurations.
+
+## Assessment Criteria
+
+1. **Functionality** (30%)
+   - Does the application perform the required predictions accurately?
+   - Are all specified features implemented correctly?
+
+2. **Code Quality** (25%)
+   - Is the code well-structured, organized, and documented?
+   - Are best practices followed in both backend and frontend development?
+
+3. **User Experience** (20%)
+   - Is the user interface intuitive, responsive, and aesthetically pleasing?
+   - Are the visualizations clear, meaningful, and useful for end-users?
+
+4. **Deployment** (15%)
+   - Is the application deployed successfully with proper accessibility and performance?
+   - Are CI/CD pipelines functioning correctly and efficiently?
+
+5. **Presentation and Documentation** (10%)
+   - Is the project documentation clear, comprehensive, and well-structured?
+   - Did the team effectively present their project and findings, demonstrating an understanding of the technologies used?
+
+## Supporting Materials
+
+- **Datasets**:
+  - [UCI Machine Learning Repository: Heart Disease Dataset](https://archive.ics.uci.edu/ml/datasets/heart+Disease)
+  - [Kaggle: Diabetes Dataset](https://www.kaggle.com/uciml/pima-indians-diabetes-database)
+
+- **FastAPI Documentation**:
+  - [FastAPI Official Documentation](https://fastapi.tiangolo.com/)
+
+- **Frontend Framework Documentation**:
+  - [React Documentation](https://reactjs.org/docs/getting-started.html)
+  - [Vue.js Documentation](https://vuejs.org/v2/guide/)
+  - [Angular Documentation](https://angular.io/docs)
+
+- **Docker Documentation**:
+  - [Docker Official Documentation](https://docs.docker.com/)
+
+- **CI/CD Resources**:
+  - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+Feel free to adapt the timeline and assessment criteria to best fit your course structure and learning objectives! 
+
+Let's inspire the next generation of developers to innovate in healthcare technology!

@@ -1,0 +1,40 @@
+---
+title: 👋 Welcome to the FastAPI Course!
+---
+
+## 🚀 Getting Started
+
+We’re thrilled to have you here on this journey into the world of **FastAPI**! 
+
+Whether you're a curious beginner or a seasoned developer looking to upskill, this course will equip you with the knowledge and hands-on experience to master **building APIs** like a pro.
+
+Together, we'll dive into key concepts like asynchronous programming, data validation, and API deployment—helping you sharpen your skills every step of the way.
+
+Each lecture brings theory to life with live coding demos 🎥, and our exercises will give you the chance to apply what you've learned in real-world scenarios. 💡
+
+Everything you need is neatly organized into:
+
+- 📚 **[Lectures](/00_Lectures/index.qmd)**: Theory and live coding examples to boost your understanding.
+
+- 🛠️ **[Exercises](/01_Exercises/index.qmd)**: Hands-on tasks to solidify your skills.
+
+- 🎓 **[Instructor Files](/02_Instructors/index.qmd)**: Teaching resources, including solutions and assessments.
+
+## ✨ New Feature: Audio Overview 
+Now, we're taking your learning experience to the next level!
+
+Introducing **Audio Overview**, where you can turn your course materials into engaging audio discussions. 
+
+With just one click, two AI hosts will dive deep into your lecture content, summarizing key points, making insightful connections, and even adding some light banter to keep you hooked. 🎧
+
+You can also download the conversation and listen on the go — perfect for when you're multitasking or need a hands-free study session!
+
+::: {.callout-note}
+These discussions stem from the lectures I've uploaded, offering you an interactive method to revisit the course material.
+
+
+They’re not a complete analysis but will help you reinforce what you’ve learned while keeping things fun!
+[More info here](https://notebooklm.google.com/)
+:::
+
+Let’s get started and build something amazing together! 💻🎉

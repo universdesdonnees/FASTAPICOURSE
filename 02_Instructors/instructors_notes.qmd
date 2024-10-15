@@ -1,0 +1,31 @@
+---
+title: "📑 FastAPI Course with Principles of Andragogy"
+---
+
+Understanding that your students are adults with professional experiences, you can apply the [principles of andragogy](https://www.thinkific.com/blog/principles-andragogy/) to enhance their learning. 
+
+Here’s how:
+
+1. **Leverage Past Experiences**: 
+   - **Tip**: Encourage students to share their experiences with APIs or web applications they've used or developed. This will help them relate the material to their professional context and see its real-world applicability.
+   - **Example**: Ask students to discuss a time when they encountered or had to integrate with an API in their job. This can prompt a discussion about the challenges they faced and how FastAPI could simplify such tasks.
+
+2. **Self-Direction**: 
+   - **Tip**: Provide opportunities for students to explore topics of interest within FastAPI and its applications. This could be through elective projects or optional advanced topics.
+   - **Example**: Allow students to choose a mini-project related to their field or job, such as building a small API to automate a task they perform frequently.
+
+3. **Relevance to Work**: 
+   - **Tip**: Ensure that the course content is directly applicable to their careers. Highlight how FastAPI can be used to solve industry-specific challenges.
+   - **Example**: In a lecture on database integration, discuss how FastAPI can be used to streamline data handling in sectors like finance or healthcare, where data integrity and speed are crucial.
+
+4. **Problem-Centered Approach**: 
+   - **Tip**: Use problem-solving as a core teaching strategy. Present real-world problems and guide students in using FastAPI to develop solutions.
+   - **Example**: Create a scenario where students must build a RESTful API to handle a client’s data request and response cycle efficiently.
+
+5. **Immediate Application**: 
+   - **Tip**: Structure the course so that students can immediately apply what they learn to their work.
+   - **Example**: After teaching a concept, have students implement a small feature or fix an issue in a simulated project setting.
+
+6. **Motivation to Learn**: 
+   - **Tip**: Connect the learning objectives to personal and professional growth opportunities.
+   - **Example**: Emphasize how mastering FastAPI can enhance their skill set, making them more competitive in the job market.

@@ -1,0 +1,362 @@
+---
+title: Lab1 - Introduction to FastAPI & Development Setup
+author: Ményssa Cherifa-Luron
+date: today
+---
+
+## Overview
+
+In this lab, you'll set up your environment and create foundational API endpoints. Follow these steps to become proficient in building APIs using FastAPI. 
+
+If you have any questions or need further assistance, feel free to reach out. May the code be with you! 🌌
+
+## Goals
+
+By the end of this lab, you should be able to:
+
+- Set up a virtual environment for Python projects.
+- Install FastAPI and Uvicorn.
+- Create a basic FastAPI application.
+- Implement path parameters in your API endpoints.
+- Explore Pydantic models for data validation.
+- Develop CRUD operations for resource management.
+- Customize your FastAPI documentation.
+
+## Prerequisites
+
+Ensure you have Python and a terminal or command line interface available on your computer. 
+
+You'll be working through practical exercises, so consider how each step can be applied to real-world projects.
+
+## Exercises
+
+### 1. Environment Setup 
+1. Create and Activate a Virtual Environment
+- Open your terminal or command line interface.
+- Create a virtual environment with the following command:
+
+```bash
+python3 -m venv env
+```
+
+Activate the virtual environment:
+
+On Linux and macOS:
+
+```bash
+source env/bin/activate
+```
+On Windows:
+
+```bash
+env\Scripts\activate
+```
+
+2. Install FastAPI and Uvicorn using pip:
+
+```bash
+pip install fastapi[standard]
+pip install uvicorn[standard]
+```
+
+Verify the installation by checking the FastAPI version:
+
+```bash
+fastapi --version
+```
+
+Save the installed packages to a requirements.txt file so others can replicate your setup:
+
+```bash
+pip freeze > requirements.txt
+```
+
+### 2. Write and Test Your First FastAPI Application
+
+- Create a new file and name it `app.py`. This will be your main application file.
+- At the top of your `app.py` file, import the `FastAPI` class to initialize your application.
+- Initialize a FastAPI application by creating an instance of the `FastAPI` class. This instance will be used to define your API endpoints.
+- Use the `@app.get("/")` decorator to define a function that handles GET requests to the root path (`/`).
+- Inside the function, return a dictionary that includes a key-value pair where the key is `"message"` and the value is `"Hello World"`. This will automatically be converted to a JSON response.
+- Open your terminal and navigate to the directory containing your `app.py` file.
+- Use the following command to start the FastAPI application with Uvicorn:
+
+```bash
+uvicorn app:app --reload
+```
+- In this command, `app:app` specifies the module name (`app`) and the FastAPI instance (`app`).
+- Open a web browser and navigate to `http://127.0.0.1:8000`.
+- You should see a JSON response displaying `{"message": "Hello World"}`.
+- Visit `http://127.0.0.1:8000/docs` to view the automatically generated documentation for your API.
+
+### 3. Adding Path Parameters
+
+- In your `app.py` file, add **two new endpoints** that utilize path parameters. 
+- Create a function named `read_message` that accepts a `message` string parameter and returns it.
+- Create another function named `read_number` that accepts a `number` integer parameter and returns it.
+- For each endpoint, define a function that takes the path parameter as an argument. Ensure the function processes this parameter and includes it in the response.
+- Use type hints (e.g., `str` for text, `int` for numbers) to specify the expected data type of each path parameter.
+- Use Python's `enum` module to define an Enum class.
+- Define your Enum class, `PeopleName`, which inherits from both `str` and `Enum`. This allows your Enum members to behave like strings.
+- Inside the class, define each family member as a class variable, setting its value to the respective string : "Marc," "Marie," and "Josette."
+- Create an endpoint that accepts a path parameter of type `PeopleName`.
+- Use the `@app.get()` decorator to define the endpoint path, incorporating the Enum as a path parameter.
+- Define the function `get_person` to handle the request, using `PeopleName` as the type for the path parameter.
+- Inside the function, use `if` statements to compare the parameter against Enum members and return corresponding messages.
+
+### 4. Data Validation with Pydantic Models
+
+1. **Simple Model**
+
+- In your `app.py` file, define a Pydantic model named `User` to structure incoming data.The model should include the following fields:
+  - `name`: a string representing the user's name.
+  - `email`: an email string, using Pydantic's `BaseModel` and `EmailStr` types for validation.
+  - `age`: an integer representing the user’s age.
+- Use the `@app.post("/users/")` decorator to create a POST endpoint.
+- Implement a function named `create_user` that accepts a `User` model instance as the request body.
+- Return a JSON response confirming the creation of the user, including the validated user data.
+
+2. **Nested Models**
+
+- In your `app.py` file, define a `BaseModel` class named `Address` with fields for `street`, `city`, `state`, and `zip_code`.
+- Create another `BaseModel` class named `UserWithAddress` that includes fields for `name` (string), `email` (string), `age` (integer), and an `address` field of type `Address` to nest the address model within the user model.
+- Use the `@app.post("/users-with-address/")` decorator to define a POST endpoint.
+- Implement a function named `create_user_with_address` that accepts a `UserWithAddress` model instance as the request body.
+- Return a JSON response confirming the creation of the user with the nested address data.
+
+3. **Using Default Values**
+
+- In your `app.py` file, create a Pydantic model named `Item` with fields: `name` (string), `price` (float), and `is_available` (boolean) with a default value of `True`.
+- Use the `@app.post("/items/")` decorator to define a POST endpoint.
+- Implement a function named `create_item` that accepts an `Item` model instance.
+- Return a JSON response confirming the creation of the item, including the default `is_available` field if not provided.
+
+4. **Validating Data with Constraints**
+
+- In your `app.py` file, create a Pydantic model named `Product` with fields: `name` (use `constr` to specify a minimum and maximum length), `price` (float), and `quantity` (integer).
+- Use the `@app.post("/products/")` decorator to define a POST endpoint.
+- Implement a function named `create_product` that accepts a `Product` model instance.
+- Return a JSON response confirming the creation of the product, ensuring that the name adheres to the specified length constraints.
+
+5. **Using Lists and Optional Fields**
+
+- In your `app.py` file, create a Pydantic model named `Order` with fields: `item_name` (string), `quantity` (integer), and an optional `notes` (string) field.
+- Create another model named `Cart` with fields: `user_id` (integer) and `items` (list of `Order` instances).
+- Use the `@app.post("/carts/")` decorator to define a POST endpoint.
+- Implement a function named `create_cart` that accepts a `Cart` model instance.
+- Return a JSON response confirming the creation of the cart with the list of orders.
+
+6. **Complex Data Types**
+
+- In your `app.py` file, create a Pydantic model named `Configuration` with fields: `setting_name` (string) and `value` (string).
+- Create another model named `System` with fields: `name` (string) and `configurations` (dictionary with string keys and `Configuration` values).
+- Use the `@app.post("/systems/")` decorator to define a POST endpoint.
+- Implement a function named `create_system` that accepts a `System` model instance.
+- Return a JSON response confirming the creation of the system with its configurations.
+
+### 5. Simulate a Database and Implement CRUD Operations for Cars
+
+1. **Simulate a Database:**
+   - In your `app.py` file, create a dictionary named `cars_db` to simulate a database for storing car data.
+   - Ensure that each car entry is indexed by a unique identifier (e.g., an integer ID).
+
+2. **Define a Pydantic Model for Cars:**
+   - Create a Pydantic model named `Car` with the following fields:
+     - `brand`: a string representing the car's brand.
+     - `model`: a string representing the car's model.
+     - `date`: a datetime object representing the car's manufacture date.
+     - `price`: a float representing the car's price.
+
+3. **Implement CRUD Operations:**
+
+   - **Create (POST Endpoint):**
+     - Use the `@app.post("/cars/")` decorator to define a POST endpoint.
+     - Implement a function named `add_car` that:
+       - Accepts a `Car` model instance.
+       - Assigns a unique ID to each new car by calculating the length of `cars_db` plus one.
+       - Stores the car in `cars_db` using the assigned ID.
+       - Returns a JSON response confirming the addition of the car.
+
+   - **Read (GET Endpoints):**
+     - **Get All Cars:**
+       - Use the `@app.get("/cars/")` decorator with `response_model=List[Car]` to define an endpoint that returns all cars.
+       - Implement a function named `get_all_cars` that returns a list of all values in `cars_db`.
+
+     - **Get a Specific Car by ID:**
+       - Use the `@app.get("/cars/{car_id}")` decorator to define an endpoint that retrieves a car by its ID.
+       - Implement a function named `get_car` that:
+         - Accepts `car_id` as a path parameter.
+         - Checks if the car exists in `cars_db`.
+         - Returns the car if found, or raises an HTTP 404 exception if not found.
+
+   - **Update (PUT Endpoint):**
+     - Use the `@app.put("/cars/{car_id}")` decorator to define an endpoint for updating car details.
+     - Implement a function named `update_car_price` that:
+       - Accepts `car_id` and a `Car` model instance.
+       - Checks if the car exists in `cars_db`.
+       - Updates the price of the car (e.g., increases it by 10%).
+       - Returns a JSON response confirming the update, or raises an HTTP 404 exception if not found.
+
+   - **Delete (DELETE Endpoint):**
+     - Use the `@app.delete("/cars/{car_id}")` decorator to define an endpoint for deleting a car.
+     - Implement a function named `delete_car` that:
+       - Accepts `car_id` as a path parameter.
+       - Checks if the car exists in `cars_db`.
+       - Deletes the car if found and returns a confirmation message, or raises an HTTP 404 exception if not found.
+
+### 6. Customizing FastAPI API Documentation
+
+**1. Customize API Metadata**
+
+- **Set Title, Description, and Version:**
+  - When initializing your FastAPI instance, you can define a custom title, description, and version for your API. This information will be displayed prominently on your API's documentation page.
+  
+  ```python
+  from fastapi import FastAPI
+
+  app = FastAPI(
+      title="Recipe and Movie Collection API",  # Custom API title
+      description="An API for managing recipes and movie collections. Manage, retrieve, and share your favorite items!",  # Custom description
+      version="1.0.0",  # Version of your API
+  )
+  ```
+
+- **Add Tags with Descriptions:**
+  - Use the `openapi_tags` parameter to categorize endpoints and add descriptions. This helps users understand different sections of your API.
+  
+  ```python
+  tags_metadata = [
+      {
+          "name": "Introduction",
+          "description": "Basic introduction endpoints to get started.",
+      },
+      {
+          "name": "Recipe Management",
+          "description": "Endpoints for managing recipes including adding, retrieving, and deleting recipes.",
+      },
+      {
+          "name": "Movie Collection",
+          "description": "Endpoints for managing movie collections, including adding, retrieving, and deleting movies.",
+      },
+  ]
+
+  app = FastAPI(
+      openapi_tags=tags_metadata  # Apply tags metadata to FastAPI instance
+  )
+  ```
+
+**2. Enhance Endpoint Documentation**
+
+- **Add Detailed Docstrings:**
+  - For each endpoint, provide comprehensive docstrings that explain the endpoint's purpose, input parameters, and expected responses. This enhances the auto-generated documentation and helps users understand how to interact with your API.
+
+  ```python
+  @app.get("/", tags=["Introduction"])
+  async def index():
+      """
+      Returns a welcome message to introduce users to the API.
+
+      **Response:**
+      - `200`: A welcome message string.
+      """
+      return {"message": "Welcome to the Recipe and Movie Collection API!"}
+  ```
+
+  ```python
+  @app.post("/recipes/", tags=["Recipe Management"])
+  async def add_recipe(recipe: Recipe):
+      """
+      Add a new recipe to the collection.
+
+      **Request Body:**
+      - `title`: (string) The title of the recipe.
+      - `ingredients`: (list) The ingredients required.
+      - `instructions`: (string) The steps to prepare the recipe.
+
+      **Response:**
+      - `200`: Success message and the new recipe.
+      """
+      # Recipe handling logic here
+      pass
+  ```
+
+**3. Further Customization**
+
+- **Add Contact, License, and Terms of Service Information:**
+  - Provide additional context about your API by including contact details, licensing information, and terms of service. This is especially useful for public or enterprise APIs.
+
+  ```python
+  app = FastAPI(
+      title="Recipe and Movie Collection API",
+      description="An API for managing recipes and movie collections.",
+      version="1.0.0",
+      contact={
+          "name": "API Support Team",
+          "email": "support@example.com",
+          "url": "https://example.com/support"
+      },
+      license_info={
+          "name": "MIT License",
+          "url": "https://opensource.org/licenses/MIT",
+      },
+      terms_of_service="https://example.com/terms/"
+  )
+  ```
+
+### 7. Putting It All Together
+
+<div class="video_holder">
+  <video controls>
+    <source src="/01_Exercises/Putting It All Together.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+1. **Setting Up the Project:**
+
+- **Create a Python file** where you will define your FastAPI application (e.g., `main.py`).
+- **Set up a virtual environment** and install FastAPI and Uvicorn if you haven’t already. This is essential for running your application.
+
+2. **Define Data Models:**
+
+- **Create Pydantic Models** for data validation:
+  - Define a `Recipe` model with fields such as `title`, `ingredients`, `instructions`, and `cook_time`.
+  - Define a `Movie` model with fields like `title`, `director`, `year`, and `genre`.
+
+3. **Simulate a Database:**
+
+- **Use Python dictionaries** to simulate a database for storing recipes and movies:
+  - Create a dictionary named `recipes_db` for storing recipes.
+  - Create another dictionary named `movies_db` for storing movies.
+  - Ensure that each entry is indexed by a unique identifier.
+
+4. **Implement CRUD Operations:**
+
+- **Create (POST Endpoint):**
+  - Define a POST endpoint to add a new recipe. Validate the input data using the `Recipe` model, assign a unique ID, and store the recipe in `recipes_db`.
+  - Similarly, create a POST endpoint for adding a new movie using the `Movie` model, storing it in `movies_db`.
+
+- **Read (GET Endpoints):**
+  - Implement a GET endpoint to retrieve all recipes from `recipes_db`. Return a list of all stored recipes.
+  - Create another GET endpoint to fetch a specific recipe by its ID, returning the data if found, or an appropriate error if not.
+  - Implement similar GET endpoints for movies, allowing retrieval of all movies or a specific movie by its ID.
+
+- **Update (PUT Endpoint):**
+  - Define a PUT endpoint to update an existing recipe. Check if the recipe exists in `recipes_db`. If it does, update its details and return a success message; if not, return an error.
+  - Implement a PUT endpoint for updating movie details, using a similar approach with `movies_db`.
+
+- **Delete (DELETE Endpoint):**
+  - Create a DELETE endpoint to remove a recipe by its ID. Check for its existence in `recipes_db`, delete it if found, and return a confirmation message; otherwise, return an error.
+  - Similarly, implement a DELETE endpoint for movies, allowing deletion by ID with appropriate checks.
+
+5. **Enhance API Documentation:**
+
+- **Use Detailed Docstrings:**
+  - For each endpoint, provide a clear and concise docstring that describes the endpoint’s purpose, parameters, expected responses, and possible errors. This enhances the auto-generated documentation at `/docs`.
+
+6. **Run the Application:**
+
+- **Start the FastAPI Server:**
+  - Use Uvicorn to run your application locally. This will enable you to test the CRUD operations and access the documentation.
+
+By following these instructions, you will have a fully functional FastAPI application capable of managing a collection of recipes and movies, complete with CRUD operations and well-documented endpoints. 

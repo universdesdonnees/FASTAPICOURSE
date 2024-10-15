@@ -1,0 +1,177 @@
+---
+title: 📋 FastAPI Course Syllabus 
+---
+
+## Course Overview
+
+This course offers an introduction to FastAPI, a high-performance Python web framework designed for building APIs quickly and efficiently.
+
+Through a mix of lectures, coding exercises, and hands-on projects, students will develop the skills necessary to build, manage, and deploy APIs, with a focus on scalability, asynchronous operations, and modern development practices.
+
+## Course Structure
+- 📚 **[Lectures](/00_Lectures/index.qmd)**: Theory and live coding examples to boost your understanding.
+
+- 🛠️ **[Exercises](/01_Exercices/index.qmd)**: Hands-on tasks to solidify your skills.
+
+- 🎓 **[Instructor Files](/02_Instructors/index.qmd)**: Teaching resources, including solutions and assessments.
+
+## Syllabus
+
+### Lecture 1. Introduction to FastAPI & Development Setup 
+
+1. What the Heck is an API, and Why Should You Care? 
+
+2. The Importance of APIs in Client-Server Architecture 
+
+3. HTTP Basics: It’s Like a Postman for the Web 
+    - 3.1. Requests in the Tech World 
+    - 3.2. HTTP Status Codes 
+    - 3.3. Role of HTTP Verbs in RESTful Web Services 
+    - 3.4. REST, SOAP, and GraphQL: The Web’s Favorite Squabble 
+
+4. URL Construction: What is a URL? 
+    - 4.1. Components of a URL 
+    - 4.2. Constructing a URL with Parameters 
+    - 4.3. Best Practices for URL Construction 
+    - 4.4. Constructing API URLs: Example Scenarios 
+
+5. Full Architecture of an HTTP Request and Response: A Breakdown 
+
+6. FastAPI’s Superpowers
+    - 6.1. FastAPI vs. Flask vs. Django 
+    - 6.2. Key Features 
+
+### Lecture 2. Building Scalable and Efficient FastAPI Applications
+
+1. The Magic of Asynchronicity
+
+    - 1.1. Synchronous vs. Asynchronous Execution
+    - 1.2. Implementing Asynchronous Endpoints
+    - 1.3. Best Practices for Asynchronous Programming
+
+2. Advanced Routing: The Map of Your FastAPI World
+    - 2.1. Introduction to Routers
+    - 2.2. Path Parameters and Query Parameters
+    - 2.3. Custom Routers and Middleware
+
+3. Database Dynamo: Powering Your App
+    - 3.1. Choosing the Right Database
+    - 3.2. SQLAlchemy and SQLModel
+    - 3.3. Database Migrations (Optional)
+
+4. Advanced Topics Toolbox (Very advanced, so very optional)
+    - 4.1. Dependency Injection
+    - 4.2. Testing FastAPI Applications
+    - 4.3. Security in FastAPI
+    - 4.4. Performance Optimization
+
+### Lecture 3. Deployment and Production Considerations
+
+1. Introduction to Deploying Machine Learning Applications
+
+    - 1.1. The Challenges of Deploying Machine Learning Models
+    - 1.2. Different Deployment Approaches
+    - 1.3. Introduction to Containerization with Docker
+    - 1.4. Benefits of Using Docker for Deployment
+
+2. Getting Started with Docker
+
+    - 2.1. Installing and Configuring Docker
+    - 2.2. Key Concepts: Images, Containers, Dockerfile
+    - 2.3. Creating a Simple Docker Image for a FastAPI Application
+    - 2.4. Running and Managing Docker Containers
+
+3. Dockerizing a Machine Learning Application
+    - 3.2. Creating a Dockerfile for the Application
+    - 3.3. Defining Dependencies and Configurations
+    - 3.4. Exposing Ports and Setting the Run Command
+    - 3.5. Building and Running the Docker Container
+    - 3.6. Deploying the Docker Image
+        - 3.6.1. Deploy to Heroku (Using Container Registry)
+        - 3.6.2. Deploy to AWS Elastic Container Service (ECS)
+    - Recap and Project Structure
+
+4. Introduction to GitHub Actions
+    - 4.1. Principles of Continuous Integration and Continuous Delivery (CI/CD)
+    - 4.2. Overview of GitHub Actions and Its Components
+    - 4.3. Creating a Basic GitHub Actions Workflow
+    - 4.4. Defining Triggers and Jobs for Deployment
+    
+5. Automating the Deployment Process with GitHub Actions
+    - 5.1. Setting Up GitHub Actions for Our Project
+    - 5.2. Configuring a Workflow for Docker Build and Deployment
+    - 5.3. Handling Secrets and Environment Variables
+    - 5.4. Monitoring and Managing Workflow Runs
+    - 5.5. Best Practices for CI/CD with GitHub Actions
+
+## Lectures Objectives
+
+### Lecture 1: Introduction to FastAPI & Development Setup
+
+**Content Overview 🎓**
+
+This module introduces the foundations of API development, HTTP basics, and how to get started with FastAPI. Students will learn how APIs function, the request/response cycle, and the technical setup for FastAPI applications.
+
+**Learning Objectives 🧠**  
+
+- Define what an API is and explain the basic components of HTTP (methods, status codes, headers) 
+- Describe the request/response cycle and how clients and servers communicate 
+- Set up a FastAPI development environment, create your first FastAPI app, and run it locally.
+- Recall basic commands and syntax for setting up a FastAPI environment.
+- Comprehend the purpose and function of FastAPI and its components.
+- Break down the structure of FastAPI applications to understand their components.
+- Explain the purpose of different HTTP methods (GET, POST, PUT, DELETE) and their real-life use cases.
+- Evaluating the correctness and efficiency of CRUD operations 
+- Develop new FastAPI applications or extend existing ones with additional features.
+- Creating new endpoints using Pydantic models to handle complex data validation and processing.
+- Customized the endpoints of the API documentation to enhance clarity and usability.
+
+### Lecture 2: Building Scalable and Efficient FastAPI Applications
+
+**Content Overview 🎓**
+
+In this module, students will dive deeper into FastAPI’s core features, such as asynchronous programming, path parameters, and data validation.
+
+Additionally, this module covers the integration of databases (e.g., SQLAlchemy) to store and retrieve data.
+
+**Learning Objectives 🧠**  
+
+- Organize and manage routers to effectively structure large-scale FastAPI projects.
+- Identify and evaluate database integration tools that are compatible with FastAPI for seamless data management.
+- Implement a persistent database solution to efficiently store and retrieve necessary data within FastAPI applications.
+- Articulate how FastAPI leverages Python’s async/await syntax to handle multiple requests concurrently, enhancing application performance.
+- Explore SQLModel as an ORM solution that integrates the capabilities of Pydantic and SQLAlchemy for streamlined data modeling and interaction.
+- Utilize asynchronous programming techniques to perform non-blocking database queries, optimizing the responsiveness of FastAPI applications.
+
+### Lecture 3: Deployment and Production Considerations
+
+* Understand containerization and CI/CD concepts.
+* Build Docker images for machine learning applications.
+* Set up GitHub Actions workflows for automated deployments.
+* Deploy and manage machine learning applications on the Heroku platform.
+
+**Content Overview 🎓**  
+
+This module focuses on preparing FastAPI applications for deployment. Students will learn how to containerize their applications using Docker and deploy them to cloud services such as Heroku or AWS, ensuring that the application can scale and handle real-world traffic.
+
+**Learning Objectives 🧠**  
+
+- Identify the steps required for deploying a FastAPI application to a cloud platform.
+- List common cloud platforms (e.g., AWS, Heroku, GCP) and their basic services for web applications.
+- Describe the importance of Docker in creating reproducible environments for deployment. 
+- Explain how scaling works on cloud platforms and why it is critical for handling increased traffic.
+- Containerize a FastAPI application using Docker and deploy it to a cloud service.
+- Implement environment variables and configurations for production environments.
+- Analyze the advantages and challenges of deploying a FastAPI application in the cloud versus on-premise.
+- Compare different deployment strategies (manual vs. automated CI/CD pipelines).
+- Evaluate the performance of a deployed FastAPI application under different traffic conditions.
+
+## Assessment and Evaluation
+
+- **Lectures**: Participation and engagement in live sessions.
+- **Exercises**: Hands-on coding tasks that will be graded based on completion and accuracy.
+- **Final Project**: A capstone project where students will build, document, and deploy a complete FastAPI-based API.
+- **Instructor Feedback**: Personalized feedback will be provided throughout the course to ensure continuous improvement.
+
+## Expectations for Students  
+Students are expected to actively participate in all lectures, complete exercises on time, and engage with their peers in group discussions or projects. Continuous feedback will be provided to help students improve.

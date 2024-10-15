@@ -1,0 +1,17 @@
+---
+title: 📑 Instructors
+---
+
+## Instructor Notes
+- [Detailed notes on lecture content](/02_Instructors/instructors_notes.qmd)
+
+
+## Solution Guides
+- [Lab 1](/02_Instructors/01_Lab_Solutions.qmd) 
+- [Lab 2](/02_Instructors/02_Lab_Solutions.qmd)  
+- [Lab 3](/02_Instructors/03_Lab_Solutions.qmd) 
+
+## Assessment Materials
+Final project : [HealthPredictor: A Healthcare Machine Learning Application](/02_Instructors/assessment_materials.qmd)
+
+

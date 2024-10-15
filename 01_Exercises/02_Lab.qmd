@@ -1,0 +1,434 @@
+---
+title: Lab 2 - Building Scalable and Efficient FastAPI Applications
+author: Ményssa Cherifa-Luron  
+date: today
+---
+
+## Overview
+
+In this notebook, you will create two distinct APIs, each tailored for different industries:
+
+- **Marketing Agency API**: This API will help manage clients and their marketing campaigns for a fictional agency. You’ll handle client requests, campaign management, performance tracking, and secure sensitive data. The API will be designed to scale, allowing you to efficiently manage multiple clients and campaigns simultaneously.
+
+- **Healthcare Management API**:  This API is designed to manage patient records, doctor schedules, medical appointments, and prescriptions. The project will emphasize integrating external APIs, handling real-time data, and ensuring compliance with healthcare regulations.
+
+::: {.callout-important title="Note" collapse="true"}
+Healthcare Management API project is optional and intended for students who feel comfortable taking on an additional challenge
+::: 
+
+## Goals
+
+By the end of this lab, you should be able to:
+
+1. Use **asynchronous programming** to improve performance when handling multiple client requests.
+2. Create **CRUD routes** to manage clients and their marketing campaigns.
+3. Integrate a **database** to store client and campaign information.
+4. Apply **dependency injection** to keep your code modular.
+5. Write tests using **`pytest`** to verify that your client operations work as expected.
+6. Secure sensitive **client data** using authentication and authorization. (optional)
+7. Use **performance optimization** techniques to make your API efficient under high loads.(optional)
+
+## Prerequisites
+
+Ensure you have FastAPI, SQLAlchemy (or SQLModel), Pydantic, and other necessary libraries installed. You’ll also need access to Python and a terminal.
+
+## Marketing Agency API
+
+### Key Features
+
+1. **Client Management**:
+   - Create, update, and delete client profiles.
+   - Store client-specific information such as contact details and preferences.
+   
+2. **Campaign Management**:
+   - Create and manage marketing campaigns for clients.
+   - Track campaign performance metrics and budget allocations.
+
+3. **Database Integration**:
+   - Utilize SQLAlchemy for ORM and database management.
+   - Support for SQLite with easy migration to other databases if needed.
+
+4. **Fake Data Generation**: Populate the database with synthetic data for testing purposes using Faker.
+
+5. **API Testing**:
+   - Comprehensive test suite using `pytest` to ensure reliability.
+   - Test coverage for all major CRUD operations and business logic.
+
+### Project structure 
+```bash
+MARKETING
+│
+├── .venv/
+│
+├── app/
+│   ├── test/
+│   │   ├── __init__.py
+│   │   └── test_unit.py
+│   │
+│   ├── __init__.py
+│   ├── campaign_routes.py
+│   ├── client_routes.py
+│   ├── database.py
+│   ├── generate_fake_data.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
+│
+├── env/
+│
+├── prod.db
+│
+└── requirements.txt
+```
+
+### Implementation Steps
+
+#### 1. `app/__init__.py`
+
+Leave this file empty or add package-level documentation.
+
+#### 2. `app/models.py`
+
+Define the database structure using SQLAlchemy models for `Client` and `Campaign`.
+
+1. **Import Necessary Components**:
+   - Import `Column`, `Integer`, `String`, `ForeignKey`, `DateTime`, `JSON`, `relationship` from SQLAlchemy.
+   - Import `Base` from your database setup file.
+
+2. **Define the `Client` Class**:
+   - Set `__tablename__ = "clients"` to specify the table name.
+   - Define columns:
+     - `id`: Primary key, integer, indexed.
+     - `name`: String, indexed.
+     - `email`: Unique string, indexed.
+   - Define a relationship with `Campaign`:
+     - `campaigns = relationship("Campaign", back_populates="client")`.
+
+3. **Define the `Campaign` Class**:
+   - Set `__tablename__ = "campaigns"` to specify the table name.
+   - Define columns:
+     - `id`: Primary key, integer, indexed.
+     - `campaign_name`: String, indexed.
+     - `description`: String for campaign description.
+     - `start_date`: DateTime for when the campaign starts.
+     - `budget`: Integer for campaign budget.
+     - `performance_metrics`: JSON for storing metrics.
+     - `canal`: String 
+     - `client_id`: Foreign key referencing `clients.id`.
+   - Define a relationship with `Client`:
+     - `client = relationship("Client", back_populates="campaigns")`.
+
+#### 3. `app/schemas.py`
+
+Create Pydantic models for validating request and response data.
+
+1. **Import BaseModel**:
+   - Import `BaseModel` from Pydantic.
+
+2. **Define `ClientSchema`**:
+   - Create a class `ClientBase` inheriting from `BaseModel` with fields:
+     - `name`: String.
+     - `email`: String.
+   - Create a class `ClientCreate` inheriting from `ClientBase` for creation-specific validation.
+
+3. **Define `Client`**:
+   - Create a class `Client` inheriting from `ClientBase` with an additional field:
+     - `id`: Integer.
+   - Add `Config` class inside to enable ORM mode: `orm_mode = True`.
+
+4. **Define `CampaignSchema`**:
+   - Create a class `CampaignBase` inheriting from `BaseModel` with fields:
+     - `campaign_name`: String.
+     - `description`: String.
+     - `start_date`: DateTime.
+     - `budget`: Integer.
+     - `performance_metrics`: JSON.
+     - `canal`:     canal: List[Literal['internet', 'tv', 'radio']].
+   - Create a class `CampaignCreate` inheriting from `CampaignBase` for creation-specific validation.
+
+5. **Define `Campaign`**:
+   - Create a class `Campaign` inheriting from `CampaignBase` with additional fields:
+     - `id`: Integer.
+     - `client_id`: Integer.
+   - Add `Config` class inside to enable ORM mode: `orm_mode = True`.
+
+#### 4. `app/database.py`
+
+Set up database configuration and connection.
+
+1. **Import Necessary Components**:
+   - Import `create_engine`, `sessionmaker`, and `declarative_base` from SQLAlchemy.
+
+2. **Configure Database**:
+   - Define the database URL using SQLite : DATABASE_URL = "sqlite:///./prod.db"
+   - Create a database engine and session local.
+   - Define a `Base` class for model definitions.
+
+#### 5. `app/generate_fake_data.py`
+
+Populate the database with fake data for testing.
+
+1. **Install Faker**:
+   - Run `pip install faker`.
+
+2. **Generate Data**:
+   - Import Faker and create an instance.
+   - Generate sample data for 10 clients and 20 campaigns (2 campaigns/client)
+   - Insert this data into the database using SQLAlchemy.
+
+#### 6. `app/campaign_routes.py`
+
+Define API routes for managing campaigns.
+
+1. **Import Necessary Components**:
+   - Import `APIRouter` from FastAPI.
+
+2. **Set Up CRUD Operations**:
+   - Define routes for creating, reading, updating, and deleting campaigns.
+   - Include additional routes for pausing and terminating campaigns.
+   - Use dependency injection to access the database session.
+
+#### 7. `app/client_routes.py`
+
+Define API routes for managing clients.
+
+1. **Import Necessary Components**:
+   - Import `APIRouter` from FastAPI.
+
+2. **Set Up CRUD Operations**:
+   - Define routes for creating, reading, updating, and deleting clients.
+   - Use dependency injection to access the database session.
+
+#### 8. `app/main.py`
+
+Initialize the FastAPI application, include routers, and define application startup and shutdown behavior.
+
+1. Import Required Modules:
+- Import `FastAPI` from FastAPI.
+- Import `APIRouter` from `client_routes.py` and `campaign_routes.py`.
+- Import `asynccontextmanager` from `contextlib` for managing startup and shutdown tasks.
+- Import `generate_fake_data` from `generate_fake_data.py`.
+
+2. Initialize FastAPI with a lifespan context manager:
+```python
+app = FastAPI(lifespan=lifespan)
+```
+
+3. Add the client and campaign routers to the FastAPI instance:
+```python
+app.include_router(client_router, prefix="/clients", tags=["Clients"])
+app.include_router(campaign_router, prefix="/campaigns", tags=["Campaigns"])
+```
+
+4. Use the `@asynccontextmanager` decorator to define startup and shutdown logic:
+```python
+  @asynccontextmanager
+  async def lifespan(app: FastAPI):
+    # Startup logic
+    print("Generating fake data during startup...")
+    generate_fake_data()  # Ensure this runs during startup
+      yield  # Pass control to the rest of the app
+    # Shutdown logic can be added here if needed
+```
+
+#### 10. `app/test/test_unit.py`
+
+Test the API endpoints for clients and campaigns to ensure they perform CRUD operations correctly.
+
+1. **Import Required Modules**:
+   - Import `pytest` for testing framework functionalities.
+   - Import `TestClient` from `fastapi.testclient` to simulate HTTP requests to the FastAPI app.
+   - Import `create_engine` and `sessionmaker` from `sqlalchemy` for database connections.
+   - Import `SQLModel` and `Session` from `sqlmodel`.
+   - Import `StaticPool` from `sqlmodel.pool` to manage SQLite in-memory database.
+
+2. **Import Your App and Models**:
+   - Import the FastAPI app from `app.main`.
+   - Import `get_db`, `engine`, and `Base` from `app.database`.
+   - Import `Client` and `Campaign` models from `app.models`.
+
+3. **Set Up Test Database**:
+   - Create an in-memory SQLite database for testing:
+     ```python
+     test_engine = create_engine(
+         "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
+     )
+     ```
+   - Define a `SessionLocal` session factory bound to `test_engine`.
+
+4. **Create Database Tables**:
+   - Use `Base.metadata.create_all(bind=test_engine)` to create tables.
+
+5. **Define Fixtures**:
+   - **Session Fixture**:
+     - Create a fresh database session for each test:
+       ```python
+       @pytest.fixture(name="session")
+       def session_fixture():
+           Base.metadata.create_all(bind=test_engine)
+           with Session(test_engine) as session:
+               yield session
+           Base.metadata.drop_all(bind=test_engine)  # Clean up after tests
+       ```
+   - **Client Fixture**:
+     - Override the default database session with the test session:
+       ```python
+       @pytest.fixture(name="client")
+       def client_fixture(session: Session):
+           def get_session_override():
+               return session
+
+           app.dependency_overrides[get_db] = get_session_override
+           client = TestClient(app)
+           yield client
+           app.dependency_overrides.clear()
+       ```
+
+6. **One example : Test Create Client**:
+```python
+def test_create_client(client: TestClient):
+  response = client.post(
+    "/clients/", json={"name": "Test Client", "email": "test1@example.com"}
+    )
+  data = response.json()
+  assert response.status_code == 200
+  assert data["name"] == "Test Client"
+  assert data["email"] == "test1@example.com"
+  assert data["id"] is not None
+```
+**Do the same for all clients endpoints**
+
+7. **Run `pytest`** in the terminal from the project root to execute tests.
+
+#### 11. `requirements.txt`
+
+Use `pip freeze > requirements.txt` after installing packages. 
+
+#### 12. Go Further : Implement Security
+
+Secure the application by implementing authentication and authorization.
+
+1. **Explore FastAPI Security**:
+   - Visit the FastAPI security tutorial: [FastAPI Security Documentation](https://fastapi.tiangolo.com/tutorial/security/).
+
+2. **Implement OAuth2 with Password (and hashing)**:
+   - Use `fastapi.security` to implement OAuth2 with password hashing.
+   - Set up a `get_current_user` dependency to secure routes.
+   - Define a `User` model for managing users and credentials.
+
+3. **Add JWT Authentication**:
+   - Use `python-jose` for JWT token management.
+   - Secure routes by requiring valid tokens for access.
+
+4. **Role-Based Access Control (RBAC)**:
+   - Implement roles (e.g., admin, user) to control access to specific endpoints.
+   - Use role checks in your route dependencies.
+
+5. **Test Security Features**:
+   - Write tests to ensure that unauthorized users cannot access protected endpoints.
+   - Verify that users with valid tokens have the correct permissions.
+
+
+## Healthcare Management API
+
+### Key Features
+- **Patient Management**: Create and manage patient profiles, including medical history and contact information.
+- **Doctor Schedule**: Organize and update doctor availability and appointments.
+- **Appointment Booking**: Allow patients to book, update, or cancel appointments.
+- **Prescription Management**: Track prescriptions, refills, and pharmacy interactions.
+- **Secure Data Handling**: Implement role-based access control and data encryption for patient confidentiality.
+- **Integration with External APIs**: Connect with third-party services for additional functionalities like pharmacy networks or insurance verification.
+- **Real-Time Notifications**: Implement WebSocket or similar technology for real-time updates on appointments and prescriptions.
+
+### Project Structure
+```
+HEALTHCARE
+│
+├── .venv/
+│
+├── app/
+│   ├── __pycache__/
+│   ├── test/
+│   │   ├── __pycache__/
+│   │   ├── __init__.py
+│   │   └── test_unit.py
+│   │
+│   ├── __init__.py
+│   ├── appointment_routes.py
+│   ├── doctor_routes.py
+│   ├── patient_routes.py
+│   ├── prescription_routes.py
+│   ├── database.py
+│   ├── external_api.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
+│
+├── env/
+│
+├── prod.db
+│
+└── requirements.txt
+```
+
+### Implementation Steps
+
+1. **Set Up Project Environment**:
+   - Create a virtual environment and install necessary packages (`fastapi`, `uvicorn`, `sqlalchemy`, `pydantic`, `python-jose[cryptography]`, `websockets`).
+
+2. **Design Database Models**:
+   - Define models for `Patient`, `Doctor`, `Appointment`, and `Prescription` using SQLAlchemy.
+
+`Patient` Model
+
+- `id`: Integer, primary key
+- `name`: String, indexed
+- `age`: Integer
+- `gender`: String
+- `medical_history`: Text
+
+`Doctor` Model
+
+- `id`: Integer, primary key
+- `name`: String, indexed
+- `specialty`: String
+- `contact_info`: String
+
+`Appointment` Model
+
+- `id`: Integer, primary key
+- `appointment_date`: DateTime
+- `patient_id`: Integer, ForeignKey
+- `doctor_id`: Integer, ForeignKey
+- `status`: String
+
+`Prescription` Model
+
+- `id`: Integer, primary key
+- `medication_name`: String
+- `dosage`: String
+- `patient_id`: Integer, ForeignKey
+- `doctor_id`: Integer, ForeignKey
+- `instructions`: Text
+
+3. **Create Pydantic Schemas**:
+   - Design schemas for data validation and serialization.
+
+4. **Implement CRUD Operations**:
+   - Develop routes for managing patients, doctors, appointments, and prescriptions.
+
+5. **Secure the API**:
+   - Implement JWT authentication and role-based access control (RBAC).
+
+6. **Integrate External APIs**:
+   - Set up connections to pharmacy networks, insurance companies, or other relevant services.
+
+7. **Real-Time Data Handling**:
+   - Use WebSocket for notifications about appointment changes or prescription updates.
+
+8. **Testing**:
+   - Write unit and integration tests to ensure all functionalities work as expected.
+
+9. **Documentation**:
+   - Provide comprehensive API documentation using FastAPI’s built-in tools.
+

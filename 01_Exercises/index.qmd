@@ -1,0 +1,11 @@
+---
+title: 📑 Exercises
+---
+
+These labs are designed to give you practical experience, allowing you to **apply** your knowledge, **experiment** with code, and **solve real-world problems**. 
+
+- [Lab 1](/01_Exercises/01_Lab.qmd) 📝
+- [Lab 2](/01_Exercises//02_Lab.qmd) 📝
+- [Lab 3](/01_Exercises/03_Lab.qmd) 📝
+
+Roll up your sleeves, get coding, and most importantly—**have fun**! 

@@ -1,0 +1,41 @@
+---
+title: Lab 2 - Building Scalable and Efficient FastAPI Applications
+subtitle: Solutions
+author: Ményssa Cherifa-Luron  
+date: today
+---
+
+## Overview
+
+In this lab, guide your students through setting up their development environment and creating foundational API endpoints using FastAPI for managing clients and their marketing campaigns (or pharmaceutical trials).
+
+These exercises are designed to build proficiency in constructing robust APIs for various industries. Encourage students to ask questions and explore as they progress through their coding journey. 
+
+May the code be with them! 🌟
+## Goals
+
+You will help students achieve the following:
+
+1. **Asynchronous Programming**: Improve performance when handling multiple client requests by implementing asynchronous programming techniques.
+
+2. **CRUD Routes**: Create routes for managing clients and their marketing campaigns, allowing for full Create, Read, Update, and Delete operations.
+
+3. **Database Integration**: Integrate a database to store client and campaign information, ensuring reliable and structured data management.
+
+4. **Dependency Injection**: Apply dependency injection to maintain modularity and facilitate easier testing and maintenance of the code.
+
+5. **Testing with `pytest`**: Write comprehensive tests using `pytest` to verify that client and campaign operations work as expected.
+
+6. **Client Data Security**: Secure sensitive client data by implementing authentication and authorization mechanisms.
+
+7. **Performance Optimization**: Utilize performance optimization techniques to ensure the API remains efficient under high loads.
+
+## Marketing Agency API
+
+[The full project solution is available here](https://github.com/universdesdonnees/FASTAPICOURSE/blob/main/02_Instructors/marketing.zip)
+
+## Healthcare Management API
+
+This project is optional and intended for students who feel comfortable taking on an additional challenge. 
+
+*The full project solution folder will be available soon*
