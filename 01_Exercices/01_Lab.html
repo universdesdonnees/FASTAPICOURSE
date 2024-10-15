@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ményssa Cherifa-Luron">
+<meta name="dcterms.date" content="2024-10-11">
+
+<title>FastAPICourse - Lab1 - Introduction to FastAPI &amp; Development Setup</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_Exercices/index.html">Exercices</a></li><li class="breadcrumb-item"><a href="../01_Exercices/01_Lab.html">Lab 1</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/course_cover.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/universdesdonnees" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/menyssacherifaluron/" title="Menyssa's Linkedin" class="quarto-navigation-tool px-1" aria-label="Menyssa's Linkedin"><i class="bi bi-linkedin"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Course information</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/01_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Introduction to FastAPI &amp; Development Setup</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/02_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Building Scalable and Efficient FastAPI Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/03_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Deployment and Production Considerations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Exercices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercices/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercices/01_Lab.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lab 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercices/02_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercices/03_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Instructors</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_Instructors/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
+  <li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions" class="nav-link" data-scroll-target="#step-by-step-instructions">Step-by-Step Instructions</a>
+  <ul class="collapse">
+  <li><a href="#environment-setup" id="toc-environment-setup" class="nav-link" data-scroll-target="#environment-setup">1. Environment Setup</a></li>
+  <li><a href="#write-and-test-your-first-fastapi-application" id="toc-write-and-test-your-first-fastapi-application" class="nav-link" data-scroll-target="#write-and-test-your-first-fastapi-application">2. Write and Test Your First FastAPI Application</a></li>
+  <li><a href="#adding-path-parameters" id="toc-adding-path-parameters" class="nav-link" data-scroll-target="#adding-path-parameters">3. Adding Path Parameters</a></li>
+  <li><a href="#data-validation-with-pydantic-models" id="toc-data-validation-with-pydantic-models" class="nav-link" data-scroll-target="#data-validation-with-pydantic-models">4. Data Validation with Pydantic Models</a></li>
+  <li><a href="#simulate-a-database-and-implement-crud-operations-for-cars" id="toc-simulate-a-database-and-implement-crud-operations-for-cars" class="nav-link" data-scroll-target="#simulate-a-database-and-implement-crud-operations-for-cars">5. Simulate a Database and Implement CRUD Operations for Cars</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">6.</a></li>
+  <li><a href="#customizing-fastapi-api-documentation" id="toc-customizing-fastapi-api-documentation" class="nav-link" data-scroll-target="#customizing-fastapi-api-documentation">Customizing FastAPI API Documentation</a></li>
+  <li><a href="#code-example-putting-it-all-together" id="toc-code-example-putting-it-all-together" class="nav-link" data-scroll-target="#code-example-putting-it-all-together">Code Example: Putting It All Together</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_Exercices/index.html">Exercices</a></li><li class="breadcrumb-item"><a href="../01_Exercices/01_Lab.html">Lab 1</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lab1 - Introduction to FastAPI &amp; Development Setup</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ményssa Cherifa-Luron </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 11, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>In this lab, you’ll set up your environment and create foundational API endpoints. Follow these steps to become proficient in building APIs using FastAPI.</p>
+<p>If you have any questions or need further assistance, feel free to reach out. May the code be with you! 🌌</p>
+</section>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<ul>
+<li>Set up a virtual environment for Python projects.</li>
+<li>Install FastAPI and Uvicorn.</li>
+<li>Create a basic FastAPI application.</li>
+<li>Implement path parameters in your API endpoints.</li>
+<li>Explore Pydantic models for data validation.</li>
+<li>Develop CRUD operations for resource management.</li>
+<li>Customize your FastAPI documentation.</li>
+</ul>
+</section>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<p>Ensure you have Python and a terminal or command line interface available on your computer.</p>
+<p>You’ll be working through practical exercises, so consider how each step can be applied to real-world projects.</p>
+</section>
+<section id="step-by-step-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="step-by-step-instructions">Step-by-Step Instructions</h2>
+<section id="environment-setup" class="level3">
+<h3 class="anchored" data-anchor-id="environment-setup">1. Environment Setup</h3>
+<ol type="1">
+<li>Create and Activate a Virtual Environment</li>
+</ol>
+<ul>
+<li>Open your terminal or command line interface.</li>
+<li>Create a virtual environment with the following command:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Activate the virtual environment:</p>
+<p>On Linux and macOS:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> env/bin/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>On Windows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">env</span><span class="dt">\S</span>cripts<span class="dt">\a</span>ctivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li>Install FastAPI and Uvicorn using pip:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install fastapi<span class="pp">[</span><span class="ss">standard</span><span class="pp">]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install uvicorn<span class="pp">[</span><span class="ss">standard</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Verify the installation by checking the FastAPI version:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastapi</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Save the installed packages to a requirements.txt file so others can replicate your setup:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> freeze <span class="op">&gt;</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="write-and-test-your-first-fastapi-application" class="level3">
+<h3 class="anchored" data-anchor-id="write-and-test-your-first-fastapi-application">2. Write and Test Your First FastAPI Application</h3>
+<ul>
+<li>Create a new file and name it <code>app.py</code>. This will be your main application file.</li>
+<li>At the top of your <code>app.py</code> file, import the <code>FastAPI</code> class to initialize your application.</li>
+<li>Initialize a FastAPI application by creating an instance of the <code>FastAPI</code> class. This instance will be used to define your API endpoints.</li>
+<li>Use the <code>@app.get("/")</code> decorator to define a function that handles GET requests to the root path (<code>/</code>).</li>
+<li>Inside the function, return a dictionary that includes a key-value pair where the key is <code>"message"</code> and the value is <code>"Hello World"</code>. This will automatically be converted to a JSON response.</li>
+<li>Open your terminal and navigate to the directory containing your <code>app.py</code> file.</li>
+<li>Use the following command to start the FastAPI application with Uvicorn:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> app:app <span class="at">--reload</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>In this command, <code>app:app</code> specifies the module name (<code>app</code>) and the FastAPI instance (<code>app</code>).</li>
+<li>Open a web browser and navigate to <code>http://127.0.0.1:8000</code>.</li>
+<li>You should see a JSON response displaying <code>{"message": "Hello World"}</code>.</li>
+<li>Visit <code>http://127.0.0.1:8000/docs</code> to view the automatically generated documentation for your API.</li>
+</ul>
+</section>
+<section id="adding-path-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="adding-path-parameters">3. Adding Path Parameters</h3>
+<ul>
+<li>In your <code>app.py</code> file, add <strong>two new endpoints</strong> that utilize path parameters.</li>
+<li>Create a function named <code>read_message</code> that accepts a <code>message</code> string parameter and returns it.</li>
+<li>Create another function named <code>read_number</code> that accepts a <code>number</code> integer parameter and returns it.</li>
+<li>For each endpoint, define a function that takes the path parameter as an argument. Ensure the function processes this parameter and includes it in the response.</li>
+<li>Use type hints (e.g., <code>str</code> for text, <code>int</code> for numbers) to specify the expected data type of each path parameter.</li>
+<li>Use Python’s <code>enum</code> module to define an Enum class.</li>
+<li>Define your Enum class, <code>PeopleName</code>, which inherits from both <code>str</code> and <code>Enum</code>. This allows your Enum members to behave like strings.</li>
+<li>Inside the class, define each family member as a class variable, setting its value to the respective string : “Marc,” “Marie,” and “Josette.”</li>
+<li>Create an endpoint that accepts a path parameter of type <code>PeopleName</code>.</li>
+<li>Use the <code>@app.get()</code> decorator to define the endpoint path, incorporating the Enum as a path parameter.</li>
+<li>Define the function <code>get_person</code> to handle the request, using <code>PeopleName</code> as the type for the path parameter.</li>
+<li>Inside the function, use <code>if</code> statements to compare the parameter against Enum members and return corresponding messages.</li>
+</ul>
+</section>
+<section id="data-validation-with-pydantic-models" class="level3">
+<h3 class="anchored" data-anchor-id="data-validation-with-pydantic-models">4. Data Validation with Pydantic Models</h3>
+<ol type="1">
+<li><strong>Simple Model</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, define a Pydantic model named <code>User</code> to structure incoming data.The model should include the following fields:
+<ul>
+<li><code>name</code>: a string representing the user’s name.</li>
+<li><code>email</code>: an email string, using Pydantic’s <code>BaseModel</code> and <code>EmailStr</code> types for validation.</li>
+<li><code>age</code>: an integer representing the user’s age.</li>
+</ul></li>
+<li>Use the <code>@app.post("/users/")</code> decorator to create a POST endpoint.</li>
+<li>Implement a function named <code>create_user</code> that accepts a <code>User</code> model instance as the request body.</li>
+<li>Return a JSON response confirming the creation of the user, including the validated user data.</li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Nested Models</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, define a <code>BaseModel</code> class named <code>Address</code> with fields for <code>street</code>, <code>city</code>, <code>state</code>, and <code>zip_code</code>.</li>
+<li>Create another <code>BaseModel</code> class named <code>UserWithAddress</code> that includes fields for <code>name</code> (string), <code>email</code> (string), <code>age</code> (integer), and an <code>address</code> field of type <code>Address</code> to nest the address model within the user model.</li>
+<li>Use the <code>@app.post("/users-with-address/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>create_user_with_address</code> that accepts a <code>UserWithAddress</code> model instance as the request body.</li>
+<li>Return a JSON response confirming the creation of the user with the nested address data.</li>
+</ul>
+<ol start="3" type="1">
+<li><strong>Using Default Values</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, create a Pydantic model named <code>Item</code> with fields: <code>name</code> (string), <code>price</code> (float), and <code>is_available</code> (boolean) with a default value of <code>True</code>.</li>
+<li>Use the <code>@app.post("/items/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>create_item</code> that accepts an <code>Item</code> model instance.</li>
+<li>Return a JSON response confirming the creation of the item, including the default <code>is_available</code> field if not provided.</li>
+</ul>
+<ol start="4" type="1">
+<li><strong>Validating Data with Constraints</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, create a Pydantic model named <code>Product</code> with fields: <code>name</code> (use <code>constr</code> to specify a minimum and maximum length), <code>price</code> (float), and <code>quantity</code> (integer).</li>
+<li>Use the <code>@app.post("/products/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>create_product</code> that accepts a <code>Product</code> model instance.</li>
+<li>Return a JSON response confirming the creation of the product, ensuring that the name adheres to the specified length constraints.</li>
+</ul>
+<ol start="5" type="1">
+<li><strong>Using Lists and Optional Fields</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, create a Pydantic model named <code>Order</code> with fields: <code>item_name</code> (string), <code>quantity</code> (integer), and an optional <code>notes</code> (string) field.</li>
+<li>Create another model named <code>Cart</code> with fields: <code>user_id</code> (integer) and <code>items</code> (list of <code>Order</code> instances).</li>
+<li>Use the <code>@app.post("/carts/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>create_cart</code> that accepts a <code>Cart</code> model instance.</li>
+<li>Return a JSON response confirming the creation of the cart with the list of orders.</li>
+</ul>
+<ol start="6" type="1">
+<li><strong>Complex Data Types</strong></li>
+</ol>
+<ul>
+<li>In your <code>app.py</code> file, create a Pydantic model named <code>Configuration</code> with fields: <code>setting_name</code> (string) and <code>value</code> (string).</li>
+<li>Create another model named <code>System</code> with fields: <code>name</code> (string) and <code>configurations</code> (dictionary with string keys and <code>Configuration</code> values).</li>
+<li>Use the <code>@app.post("/systems/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>create_system</code> that accepts a <code>System</code> model instance.</li>
+<li>Return a JSON response confirming the creation of the system with its configurations.</li>
+</ul>
+</section>
+<section id="simulate-a-database-and-implement-crud-operations-for-cars" class="level3">
+<h3 class="anchored" data-anchor-id="simulate-a-database-and-implement-crud-operations-for-cars">5. Simulate a Database and Implement CRUD Operations for Cars</h3>
+<ol type="1">
+<li><p><strong>Simulate a Database:</strong></p>
+<ul>
+<li>In your <code>app.py</code> file, create a dictionary named <code>cars_db</code> to simulate a database for storing car data.</li>
+<li>Ensure that each car entry is indexed by a unique identifier (e.g., an integer ID).</li>
+</ul></li>
+<li><p><strong>Define a Pydantic Model for Cars:</strong></p>
+<ul>
+<li>Create a Pydantic model named <code>Car</code> with the following fields:
+<ul>
+<li><code>brand</code>: a string representing the car’s brand.</li>
+<li><code>model</code>: a string representing the car’s model.</li>
+<li><code>date</code>: a datetime object representing the car’s manufacture date.</li>
+<li><code>price</code>: a float representing the car’s price.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Implement CRUD Operations:</strong></p>
+<ul>
+<li><strong>Create (POST Endpoint):</strong>
+<ul>
+<li>Use the <code>@app.post("/cars/")</code> decorator to define a POST endpoint.</li>
+<li>Implement a function named <code>add_car</code> that:
+<ul>
+<li>Accepts a <code>Car</code> model instance.</li>
+<li>Assigns a unique ID to each new car by calculating the length of <code>cars_db</code> plus one.</li>
+<li>Stores the car in <code>cars_db</code> using the assigned ID.</li>
+<li>Returns a JSON response confirming the addition of the car.</li>
+</ul></li>
+</ul></li>
+<li><strong>Read (GET Endpoints):</strong>
+<ul>
+<li><strong>Get All Cars:</strong>
+<ul>
+<li>Use the <code>@app.get("/cars/")</code> decorator with <code>response_model=List[Car]</code> to define an endpoint that returns all cars.</li>
+<li>Implement a function named <code>get_all_cars</code> that returns a list of all values in <code>cars_db</code>.</li>
+</ul></li>
+<li><strong>Get a Specific Car by ID:</strong>
+<ul>
+<li>Use the <code>@app.get("/cars/{car_id}")</code> decorator to define an endpoint that retrieves a car by its ID.</li>
+<li>Implement a function named <code>get_car</code> that:
+<ul>
+<li>Accepts <code>car_id</code> as a path parameter.</li>
+<li>Checks if the car exists in <code>cars_db</code>.</li>
+<li>Returns the car if found, or raises an HTTP 404 exception if not found.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>Update (PUT Endpoint):</strong>
+<ul>
+<li>Use the <code>@app.put("/cars/{car_id}")</code> decorator to define an endpoint for updating car details.</li>
+<li>Implement a function named <code>update_car_price</code> that:
+<ul>
+<li>Accepts <code>car_id</code> and a <code>Car</code> model instance.</li>
+<li>Checks if the car exists in <code>cars_db</code>.</li>
+<li>Updates the price of the car (e.g., increases it by 10%).</li>
+<li>Returns a JSON response confirming the update, or raises an HTTP 404 exception if not found.</li>
+</ul></li>
+</ul></li>
+<li><strong>Delete (DELETE Endpoint):</strong>
+<ul>
+<li>Use the <code>@app.delete("/cars/{car_id}")</code> decorator to define an endpoint for deleting a car.</li>
+<li>Implement a function named <code>delete_car</code> that:
+<ul>
+<li>Accepts <code>car_id</code> as a path parameter.</li>
+<li>Checks if the car exists in <code>cars_db</code>.</li>
+<li>Deletes the car if found and returns a confirmation message, or raises an HTTP 404 exception if not found.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section">6.</h3>
+<p>To customize your FastAPI application documentation and metadata, follow these detailed instructions based on the provided content:</p>
+</section>
+<section id="customizing-fastapi-api-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="customizing-fastapi-api-documentation">Customizing FastAPI API Documentation</h3>
+<p><strong>1. Customize API Metadata</strong></p>
+<ul>
+<li><strong>Set Title, Description, and Version:</strong>
+<ul>
+<li>When initializing your FastAPI instance, you can define a custom title, description, and version for your API. This information will be displayed prominently on your API’s documentation page.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Recipe and Movie Collection API"</span>,  <span class="co"># Custom API title</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">"An API for managing recipes and movie collections. Manage, retrieve, and share your favorite items!"</span>,  <span class="co"># Custom description</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    version<span class="op">=</span><span class="st">"1.0.0"</span>,  <span class="co"># Version of your API</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><strong>Add Tags with Descriptions:</strong>
+<ul>
+<li>Use the <code>openapi_tags</code> parameter to categorize endpoints and add descriptions. This helps users understand different sections of your API.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tags_metadata <span class="op">=</span> [</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Introduction"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Basic introduction endpoints to get started."</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Recipe Management"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Endpoints for managing recipes including adding, retrieving, and deleting recipes."</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Movie Collection"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Endpoints for managing movie collections, including adding, retrieving, and deleting movies."</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    openapi_tags<span class="op">=</span>tags_metadata  <span class="co"># Apply tags metadata to FastAPI instance</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>2. Enhance Endpoint Documentation</strong></p>
+<ul>
+<li><strong>Add Detailed Docstrings:</strong>
+<ul>
+<li>For each endpoint, provide comprehensive docstrings that explain the endpoint’s purpose, input parameters, and expected responses. This enhances the auto-generated documentation and helps users understand how to interact with your API.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>, tags<span class="op">=</span>[<span class="st">"Introduction"</span>])</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> index():</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns a welcome message to introduce users to the API.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">    **Response:**</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - `200`: A welcome message string.</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Welcome to the Recipe and Movie Collection API!"</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/recipes/"</span>, tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> add_recipe(recipe: Recipe):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Add a new recipe to the collection.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">    **Request Body:**</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - `title`: (string) The title of the recipe.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - `ingredients`: (list) The ingredients required.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - `instructions`: (string) The steps to prepare the recipe.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">    **Response:**</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">    - `200`: Success message and the new recipe.</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Recipe handling logic here</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>3. Further Customization</strong></p>
+<ul>
+<li><strong>Add Contact, License, and Terms of Service Information:</strong>
+<ul>
+<li>Provide additional context about your API by including contact details, licensing information, and terms of service. This is especially useful for public or enterprise APIs.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Recipe and Movie Collection API"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">"An API for managing recipes and movie collections."</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    version<span class="op">=</span><span class="st">"1.0.0"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    contact<span class="op">=</span>{</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"API Support Team"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"email"</span>: <span class="st">"support@example.com"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"url"</span>: <span class="st">"https://example.com/support"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    license_info<span class="op">=</span>{</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"MIT License"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"url"</span>: <span class="st">"https://opensource.org/licenses/MIT"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    terms_of_service<span class="op">=</span><span class="st">"https://example.com/terms/"</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="code-example-putting-it-all-together" class="level3">
+<h3 class="anchored" data-anchor-id="code-example-putting-it-all-together">Code Example: Putting It All Together</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> uvicorn</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI, HTTPException</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Description for the API</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>description <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">Welcome to the Combined Recipe and Movie Collection API! </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">## Recipe Management</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="st">Manage and share your favorite recipes. Users can add, update, delete, and retrieve recipes, along with their ingredients and instructions.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="st">## Movie Collection</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="st">Keep track of your favorite movies. Users can manage their movie collection, including details like the title, director, and release year.</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="st">Check out documentation below 📄 for more information on each endpoint.</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Tags metadata for the API documentation</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>tags_metadata <span class="op">=</span> [</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Introduction Endpoints"</span>,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Simple endpoints to try out!"</span>,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Recipe Management"</span>,</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Manage and share your favorite recipes."</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Movie Collection"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Keep track of your favorite movies."</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Recipe and Movie Collection API"</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span>description,</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    version<span class="op">=</span><span class="st">"0.1"</span>,</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    contact<span class="op">=</span>{</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"Ményssa Cherifa-Luron"</span>,</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"email"</span>: <span class="st">"cmenyssa@live.fr"</span>,</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"url"</span>: <span class="st">"https://menyssacherifaluron.com"</span>,</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    license_info<span class="op">=</span>{</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: <span class="st">"MIT License"</span>,</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"url"</span>: <span class="st">"https://opensource.org/licenses/MIT"</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    openapi_tags<span class="op">=</span>tags_metadata</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Define Recipe and Movie models</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Recipe(BaseModel):</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>    title: <span class="bu">str</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>    ingredients: List[<span class="bu">str</span>]</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>    instructions: <span class="bu">str</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>    cook_time: <span class="bu">int</span>  <span class="co"># in minutes</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Movie(BaseModel):</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>    title: <span class="bu">str</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>    director: <span class="bu">str</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>    year: <span class="bu">int</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>    genre: <span class="bu">str</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate a database for recipes and movies</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>recipes_db <span class="op">=</span> {}</span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>movies_db <span class="op">=</span> {}</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>, tags<span class="op">=</span>[<span class="st">"Introduction Endpoints"</span>])</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> index():</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="co">    Simply returns a welcome message!</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Hello world! This `/` is the most simple and default endpoint. If you want to learn more, check out documentation of the API at `/docs`"</span></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Recipe Endpoints</span></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/recipes/"</span>, response_model<span class="op">=</span>List[Recipe], tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> get_all_recipes():</span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="co">    Retrieve a list of all recipes.</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(recipes_db.values())</span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/recipes/</span><span class="sc">{recipe_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> get_recipe(recipe_id: <span class="bu">int</span>):</span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a><span class="co">    Retrieve details of a specific recipe by ID.</span></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> recipe_id <span class="kw">not</span> <span class="kw">in</span> recipes_db:</span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Recipe not found"</span>)</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> recipes_db[recipe_id]</span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/recipes/"</span>, tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> add_recipe(recipe: Recipe):</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="co">    Add a new recipe.</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a>    recipe_id <span class="op">=</span> <span class="bu">len</span>(recipes_db) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>    recipes_db[recipe_id] <span class="op">=</span> recipe.<span class="bu">dict</span>()</span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Recipe added successfully"</span>, <span class="st">"recipe"</span>: recipe.<span class="bu">dict</span>()}</span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a><span class="at">@app.put</span>(<span class="st">"/recipes/</span><span class="sc">{recipe_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> update_recipe(recipe_id: <span class="bu">int</span>, recipe: Recipe):</span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a><span class="co">    Update an existing recipe by ID.</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> recipe_id <span class="kw">not</span> <span class="kw">in</span> recipes_db:</span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Recipe not found"</span>)</span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>    recipes_db[recipe_id] <span class="op">=</span> recipe.<span class="bu">dict</span>()</span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Recipe updated successfully"</span>, <span class="st">"recipe"</span>: recipe.<span class="bu">dict</span>()}</span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a><span class="at">@app.delete</span>(<span class="st">"/recipes/</span><span class="sc">{recipe_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Recipe Management"</span>])</span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> delete_recipe(recipe_id: <span class="bu">int</span>):</span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="co">    Delete a recipe by ID.</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> recipe_id <span class="kw">not</span> <span class="kw">in</span> recipes_db:</span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Recipe not found"</span>)</span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> recipes_db[recipe_id]</span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Recipe deleted successfully"</span>}</span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Movie Endpoints</span></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/movies/"</span>, response_model<span class="op">=</span>List[Movie], tags<span class="op">=</span>[<span class="st">"Movie Collection"</span>])</span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> get_all_movies():</span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a><span class="co">    Retrieve a list of all movies.</span></span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(movies_db.values())</span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/movies/</span><span class="sc">{movie_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Movie Collection"</span>])</span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> get_movie(movie_id: <span class="bu">int</span>):</span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="co">    Retrieve details of a specific movie by ID.</span></span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movie_id <span class="kw">not</span> <span class="kw">in</span> movies_db:</span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Movie not found"</span>)</span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> movies_db[movie_id]</span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/movies/"</span>, tags<span class="op">=</span>[<span class="st">"Movie Collection"</span>])</span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> add_movie(movie: Movie):</span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="co">    Add a new movie.</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>    movie_id <span class="op">=</span> <span class="bu">len</span>(movies_db) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a>    movies_db[movie_id] <span class="op">=</span> movie.<span class="bu">dict</span>()</span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Movie added successfully"</span>, <span class="st">"movie"</span>: movie.<span class="bu">dict</span>()}</span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a><span class="at">@app.put</span>(<span class="st">"/movies/</span><span class="sc">{movie_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Movie Collection"</span>])</span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> update_movie(movie_id: <span class="bu">int</span>, movie: Movie):</span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a><span class="co">    Update an existing movie by ID.</span></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movie_id <span class="kw">not</span> <span class="kw">in</span> movies_db:</span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Movie not found"</span>)</span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>    movies_db[movie_id] <span class="op">=</span> movie.<span class="bu">dict</span>()</span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Movie updated successfully"</span>, <span class="st">"movie"</span>: movie.<span class="bu">dict</span>()}</span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="at">@app.delete</span>(<span class="st">"/movies/</span><span class="sc">{movie_id}</span><span class="st">"</span>, tags<span class="op">=</span>[<span class="st">"Movie Collection"</span>])</span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> delete_movie(movie_id: <span class="bu">int</span>):</span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="co">    Delete a movie by ID.</span></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movie_id <span class="kw">not</span> <span class="kw">in</span> movies_db:</span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">404</span>, detail<span class="op">=</span><span class="st">"Movie not found"</span>)</span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> movies_db[movie_id]</span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Movie deleted successfully"</span>}</span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>    uvicorn.run(app, host<span class="op">=</span><span class="st">"127.0.0.1"</span>, port<span class="op">=</span><span class="dv">8000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Contenu adapté de <a href="https://sta210-s22.github.io/website/">STA 210: Regression Analysis</a><br> Tout le contenu est sous licence <i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-nc" aria-label="creative-commons-nc"></i> <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2024 par <a href="https://www.linkedin.com/in/menyssacherifaluron/">Ményssa Cherifa-Luron</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Fait avec <i class="fa-brands fa-python" aria-label="python"></i> et <a href="https://quarto.org/">Quarto</a><br> <a href="https://github.com/universdesdonnees/FASTAPICOURSE">Voir sur <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

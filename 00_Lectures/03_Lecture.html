@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ményssa Cherifa-Luron">
+<meta name="dcterms.date" content="2024-10-15">
+
+<title>FastAPICourse - Lecture 3 - Deployment and Production Considerations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../00_Lectures/index.html">Lectures</a></li><li class="breadcrumb-item"><a href="../00_Lectures/03_Lecture.html">3. Deployment and Production Considerations</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/course_cover.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/universdesdonnees" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/menyssacherifaluron/" title="Menyssa's Linkedin" class="quarto-navigation-tool px-1" aria-label="Menyssa's Linkedin"><i class="bi bi-linkedin"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Course information</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/01_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Introduction to FastAPI &amp; Development Setup</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/02_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Building Scalable and Efficient FastAPI Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/03_Lecture.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">3. Deployment and Production Considerations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Exercices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/01_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/02_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/03_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Instructors</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_Instructors/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR:</a></li>
+  <li><a href="#introduction-to-deploying-machine-learning-applications" id="toc-introduction-to-deploying-machine-learning-applications" class="nav-link" data-scroll-target="#introduction-to-deploying-machine-learning-applications">1. Introduction to Deploying Machine Learning Applications</a>
+  <ul class="collapse">
+  <li><a href="#the-challenges-of-deploying-machine-learning-models" id="toc-the-challenges-of-deploying-machine-learning-models" class="nav-link" data-scroll-target="#the-challenges-of-deploying-machine-learning-models">1.1. The Challenges of Deploying Machine Learning Models</a></li>
+  <li><a href="#different-deployment-approaches" id="toc-different-deployment-approaches" class="nav-link" data-scroll-target="#different-deployment-approaches">1.2. Different Deployment Approaches</a></li>
+  <li><a href="#introduction-to-containerization-with-docker" id="toc-introduction-to-containerization-with-docker" class="nav-link" data-scroll-target="#introduction-to-containerization-with-docker">1.3. Introduction to Containerization with Docker</a></li>
+  <li><a href="#benefits-of-using-docker-for-deployment" id="toc-benefits-of-using-docker-for-deployment" class="nav-link" data-scroll-target="#benefits-of-using-docker-for-deployment">1.4. Benefits of Using Docker for Deployment</a></li>
+  </ul></li>
+  <li><a href="#getting-started-with-docker" id="toc-getting-started-with-docker" class="nav-link" data-scroll-target="#getting-started-with-docker">2. Getting Started with Docker</a>
+  <ul class="collapse">
+  <li><a href="#installing-and-configuring-docker" id="toc-installing-and-configuring-docker" class="nav-link" data-scroll-target="#installing-and-configuring-docker">2.1. Installing and Configuring Docker</a></li>
+  <li><a href="#installing-docker" id="toc-installing-docker" class="nav-link" data-scroll-target="#installing-docker">Installing Docker</a></li>
+  <li><a href="#installation-steps" id="toc-installation-steps" class="nav-link" data-scroll-target="#installation-steps">Installation Steps</a></li>
+  <li><a href="#key-concepts-images-containers-dockerfile" id="toc-key-concepts-images-containers-dockerfile" class="nav-link" data-scroll-target="#key-concepts-images-containers-dockerfile">2.2. Key Concepts: Images, Containers, Dockerfile</a></li>
+  <li><a href="#creating-a-simple-docker-image-for-a-fastapi-application" id="toc-creating-a-simple-docker-image-for-a-fastapi-application" class="nav-link" data-scroll-target="#creating-a-simple-docker-image-for-a-fastapi-application">2.3. Creating a Simple Docker Image for a FastAPI Application</a></li>
+  <li><a href="#running-and-managing-docker-containers" id="toc-running-and-managing-docker-containers" class="nav-link" data-scroll-target="#running-and-managing-docker-containers">2.4. Running and Managing Docker Containers</a></li>
+  </ul></li>
+  <li><a href="#dockerizing-a-machine-learning-application" id="toc-dockerizing-a-machine-learning-application" class="nav-link" data-scroll-target="#dockerizing-a-machine-learning-application">3. Dockerizing a Machine Learning Application</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-dockerfile-for-the-application" id="toc-creating-a-dockerfile-for-the-application" class="nav-link" data-scroll-target="#creating-a-dockerfile-for-the-application">3.2 Creating a Dockerfile for the Application</a></li>
+  <li><a href="#defining-dependencies-and-configurations" id="toc-defining-dependencies-and-configurations" class="nav-link" data-scroll-target="#defining-dependencies-and-configurations">3.3 Defining Dependencies and Configurations</a></li>
+  <li><a href="#exposing-ports-and-setting-the-run-command" id="toc-exposing-ports-and-setting-the-run-command" class="nav-link" data-scroll-target="#exposing-ports-and-setting-the-run-command">3.4 Exposing Ports and Setting the Run Command</a></li>
+  <li><a href="#building-and-running-the-docker-container" id="toc-building-and-running-the-docker-container" class="nav-link" data-scroll-target="#building-and-running-the-docker-container">3.5 Building and Running the Docker Container</a></li>
+  <li><a href="#deploying-the-docker-image" id="toc-deploying-the-docker-image" class="nav-link" data-scroll-target="#deploying-the-docker-image">3.6 Deploying the Docker Image</a></li>
+  <li><a href="#deploy-to-heroku-using-container-registry" id="toc-deploy-to-heroku-using-container-registry" class="nav-link" data-scroll-target="#deploy-to-heroku-using-container-registry">3.6.1 Deploy to Heroku (Using Container Registry)</a></li>
+  <li><a href="#deploy-to-aws-elastic-container-service-ecs" id="toc-deploy-to-aws-elastic-container-service-ecs" class="nav-link" data-scroll-target="#deploy-to-aws-elastic-container-service-ecs">3.6.2 Deploy to AWS Elastic Container Service (ECS)</a></li>
+  <li><a href="#recap-and-project-structure" id="toc-recap-and-project-structure" class="nav-link" data-scroll-target="#recap-and-project-structure">Recap and Project Structure</a></li>
+  </ul></li>
+  <li><a href="#introduction-to-github-actions" id="toc-introduction-to-github-actions" class="nav-link" data-scroll-target="#introduction-to-github-actions">4. Introduction to GitHub Actions</a>
+  <ul class="collapse">
+  <li><a href="#principles-of-continuous-integration-and-continuous-delivery-cicd" id="toc-principles-of-continuous-integration-and-continuous-delivery-cicd" class="nav-link" data-scroll-target="#principles-of-continuous-integration-and-continuous-delivery-cicd">4.1 Principles of Continuous Integration and Continuous Delivery (CI/CD)</a></li>
+  <li><a href="#overview-of-github-actions-and-its-components" id="toc-overview-of-github-actions-and-its-components" class="nav-link" data-scroll-target="#overview-of-github-actions-and-its-components">4.2 Overview of GitHub Actions and Its Components</a></li>
+  <li><a href="#creating-a-basic-github-actions-workflow" id="toc-creating-a-basic-github-actions-workflow" class="nav-link" data-scroll-target="#creating-a-basic-github-actions-workflow">4.3 Creating a Basic GitHub Actions Workflow</a></li>
+  <li><a href="#defining-triggers-and-jobs-for-deployment" id="toc-defining-triggers-and-jobs-for-deployment" class="nav-link" data-scroll-target="#defining-triggers-and-jobs-for-deployment">4.4 Defining Triggers and Jobs for Deployment</a></li>
+  <li><a href="#creating-a-deployment-workflow-for-heroku" id="toc-creating-a-deployment-workflow-for-heroku" class="nav-link" data-scroll-target="#creating-a-deployment-workflow-for-heroku">4.5 Creating a Deployment Workflow for Heroku</a></li>
+  <li><a href="#using-secrets-for-sensitive-information" id="toc-using-secrets-for-sensitive-information" class="nav-link" data-scroll-target="#using-secrets-for-sensitive-information">4.6 Using Secrets for Sensitive Information</a></li>
+  </ul></li>
+  <li><a href="#advanced-tools-and-technologies" id="toc-advanced-tools-and-technologies" class="nav-link" data-scroll-target="#advanced-tools-and-technologies">5. Advanced Tools and Technologies</a>
+  <ul class="collapse">
+  <li><a href="#exploring-other-cloud-platforms-for-deployment-aws-gcp-azure" id="toc-exploring-other-cloud-platforms-for-deployment-aws-gcp-azure" class="nav-link" data-scroll-target="#exploring-other-cloud-platforms-for-deployment-aws-gcp-azure">5.1 Exploring Other Cloud Platforms for Deployment (AWS, GCP, Azure)</a></li>
+  <li><a href="#using-container-orchestration-tools-like-kubernetes" id="toc-using-container-orchestration-tools-like-kubernetes" class="nav-link" data-scroll-target="#using-container-orchestration-tools-like-kubernetes">5.2 Using Container Orchestration Tools like Kubernetes</a></li>
+  <li><a href="#integrating-with-managed-machine-learning-services" id="toc-integrating-with-managed-machine-learning-services" class="nav-link" data-scroll-target="#integrating-with-managed-machine-learning-services">5.3 Integrating with Managed Machine Learning Services</a></li>
+  </ul></li>
+  <li><a href="#in-summary" id="toc-in-summary" class="nav-link" data-scroll-target="#in-summary">In Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../00_Lectures/index.html">Lectures</a></li><li class="breadcrumb-item"><a href="../00_Lectures/03_Lecture.html">3. Deployment and Production Considerations</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lecture 3 - Deployment and Production Considerations</h1>
+<p class="subtitle lead">Deploying Machine Learning Applications</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ményssa Cherifa-Luron </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 15, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">TL;DR:</h2>
+<p>If you’re short on time, tune into the cosmic highlights of our course in this audio summary:</p>
+<div style="text-align: center;">
+<figure class="figure">
+<figcaption>
+Listen to the Audio Overview:
+</figcaption>
+<audio controls="" src="03_Podcast.wav">
+</audio>
+<br> <button class="download-btn" onclick="window.location.href='03_Podcast.wav'">Download audio</button><br>
+
+</figure>
+</div>
+<p>In this course, we embark on a stellar journey to master the deployment of machine learning applications:</p>
+<ul>
+<li><strong>Containerization</strong> with Docker: Your starship for consistent and portable deployments.</li>
+<li><strong>CI/CD Pipelines</strong> using GitHub Actions: Automate your deployment journey like a seasoned Jedi.</li>
+<li><strong>Heroku Deployment</strong>: Launch your applications into the cloud galaxy with ease.</li>
+<li><strong>Best Practices</strong>: Optimize, scale, and secure your deployments for interstellar performance.</li>
+<li><strong>Advanced Tools</strong>: Explore the vast universe of cloud platforms and orchestration tools.</li>
+</ul>
+<hr>
+<p><strong>Your deployment is a starship.</strong></p>
+<p>Each component is a crucial part of your mission, from the engines (Docker) to the navigation system (GitHub Actions).</p>
+<div style="text-align: center;">
+<p><img src="https://www.science-et-vie.com/wp-content/uploads/scienceetvie/2024/03/starship_vol_3_une.jpg" alt="Starship" style="width: 400px;"></p>
+</div>
+<p><strong>Containerization</strong> is like building a reliable starship that can travel across different galaxies (environments) without a hitch. <strong>CI/CD Pipelines</strong> are your autopilot, ensuring smooth and automated journeys through the deployment cosmos.</p>
+<p><strong>Heroku</strong> is your launchpad, propelling your applications into the cloud with the grace of a Jedi starfighter. <strong>Best Practices</strong> are your navigational charts, guiding you through optimization, scaling, and security challenges.</p>
+<p><strong>Advanced Tools</strong> are the hyperdrive enhancements, allowing you to explore new frontiers in cloud deployment and orchestration.</p>
+<blockquote class="blockquote">
+<p>Are you ready to launch your machine learning applications into the cloud galaxy?</p>
+</blockquote>
+<p><strong>Let’s get started on this epic adventure!</strong></p>
+</section>
+<section id="introduction-to-deploying-machine-learning-applications" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-deploying-machine-learning-applications">1. Introduction to Deploying Machine Learning Applications</h2>
+<section id="the-challenges-of-deploying-machine-learning-models" class="level3">
+<h3 class="anchored" data-anchor-id="the-challenges-of-deploying-machine-learning-models">1.1. The Challenges of Deploying Machine Learning Models</h3>
+<p>Deploying machine learning models can sometimes feel like trying to fit a square peg into a round hole. Unlike traditional software, these models are like your favorite rock band—dynamic, unpredictable, and requiring lots of fine-tuning for each performance.</p>
+<p>Let’s explore these challenges in detail:</p>
+<p><strong>Environment Mismatch:</strong> Imagine your model is a Broadway star, rehearsed and fine-tuned in one environment, but on opening night, the stage looks completely different.</p>
+<p>This mismatch is one of the most common issues faced during deployment.</p>
+<p>Different machines might have various operating systems, library versions, or hardware configurations, causing unexpected behavior when the model is deployed. This is akin to a musician arriving at a venue only to find their instruments are tuned differently or missing entirely.</p>
+<p>To mitigate this, it’s essential to maintain a consistent environment across development and production stages. This can be achieved through environment management tools like virtualenv for Python or using containerization technologies like Docker, which we will explore later.</p>
+<p><strong>Scalability Issues:</strong> Picture a concert where more fans show up than the venue can handle. Your model should be ready to handle the crowd, scaling up or down as needed. Scalability is crucial, especially in cloud-based applications where the user base can grow unpredictably.</p>
+<p>Without proper scalability, applications can suffer from slow response times or crashes under heavy load.</p>
+<p>To address scalability, load testing tools like Apache JMeter or Locust can be used to simulate a range of traffic conditions. Additionally, cloud platforms like AWS, Azure, and Google Cloud offer auto-scaling features that automatically adjust resources based on demand.</p>
+<p><strong>Version Control:</strong> Like a band releasing multiple albums, tracking different versions of your models is crucial to know which one hits the right note. Imagine if every time a band played, they had to remember which version of their song arrangement they were supposed to perform. Similarly, in machine learning, keeping track of model versions ensures that you can revert to previous versions if a new model does not perform as expected.</p>
+<p>Tools like DVC (Data Version Control) and MLflow provide mechanisms to manage and version control models, datasets, and experiments, making it easier to reproduce results and manage model lifecycle.</p>
+<p><strong>Performance Optimization:</strong> Ensuring your model performs efficiently is like ensuring the lead singer hits all the right notes during a live performance. Performance can be influenced by factors such as model complexity, data input size, and computational resources. Optimizing performance is crucial for providing a seamless user experience and can also reduce computational costs.</p>
+<p>Techniques such as quantization, pruning, and knowledge distillation can be applied to reduce model size and improve inference speed without significantly sacrificing accuracy. Profiling tools like TensorBoard and PyTorch’s profiler can help identify performance bottlenecks in your model.</p>
+</section>
+<section id="different-deployment-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="different-deployment-approaches">1.2. Different Deployment Approaches</h3>
+<p><strong>Deploying models isn’t a one-size-fits-all approach.</strong></p>
+<p>It’s more like choosing between a solo acoustic set or a full-on rock concert. Each deployment strategy has its pros and cons, depending on the specific requirements and constraints of the application.</p>
+<p>Let’s explore these different paths in detail:</p>
+<p><strong>Local Deployment:</strong> It’s like playing music for your friends in your garage. Quick and easy, but not scalable. Local deployment is suitable for testing and development purposes, allowing you to quickly iterate and debug models on your local machine. However, it lacks the scalability and reliability needed for production environments.</p>
+<p>For local deployment, tools like Jupyter Notebooks or local Flask servers can be used to serve models and test their endpoints. This approach is ideal for prototyping and learning but not for handling production-scale traffic.</p>
+<p><strong>Server-Based Deployment:</strong> Imagine booking a local venue. More organized and can handle a decent crowd, but may require manual tuning when issues arise. Server-based deployment involves hosting your model on dedicated servers, either on-premises or in the cloud. This approach provides more control over the environment and resources.</p>
+<p>Servers can be configured using web frameworks like Flask or Django in combination with WSGI servers like Gunicorn. This setup provides flexibility and control, but requires manual management of scalability, load balancing, and failover mechanisms.</p>
+<p><strong>Cloud Deployment:</strong> Now, we’re talking major festival level. Your model gets the flexibility and power of cloud resources, scaling up and down with ease. Cloud deployment is the go-to solution for applications requiring high availability and scalability. Cloud platforms like AWS SageMaker, Azure Machine Learning, and Google AI Platform offer managed services for deploying and scaling models effortlessly.</p>
+<p>With cloud deployment, you can leverage features like auto-scaling, load balancing, and continuous integration/continuous deployment (CI/CD) pipelines to ensure your model is always available and up-to-date. Additionally, cloud providers offer a variety of instance types, allowing you to choose the best resources for your model’s needs.</p>
+<p><strong>Edge Deployment:</strong> Think of it as a secret pop-up concert. Models are deployed closer to where the action happens, reducing latency and bandwidth use. Edge deployment is ideal for applications requiring real-time inference or operating in environments with limited connectivity.</p>
+<p>Edge devices, such as IoT devices, smartphones, or embedded systems, can run machine learning models using frameworks like TensorFlow Lite or ONNX Runtime. This approach minimizes data transmission to central servers, reducing latency and improving privacy and security. Edge deployment is popular in industries like autonomous vehicles, healthcare, and smart cities.</p>
+</section>
+<section id="introduction-to-containerization-with-docker" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-to-containerization-with-docker">1.3. Introduction to Containerization with Docker</h3>
+<p>Enter Docker, the magical tour bus for your model, ensuring it arrives at each destination ready to rock without missing a beat. Containerization has revolutionized the way applications are developed, shipped, and deployed, offering a standardized approach to packaging applications and their dependencies.</p>
+<div style="text-align: center;">
+<p><img src="https://media.geeksforgeeks.org/wp-content/uploads/20190915151739/docker_flowchart-1024x640.png" alt="Starship" style="width: 400px;"></p>
+</div>
+<p><strong>What is Docker?</strong> Docker is like your model’s private dressing room, encapsulating all its dependencies, libraries, and code into a neat package called a “container.” This ensures that wherever your model goes, it performs consistently. Containers are lightweight, portable, and can run on any machine that supports Docker, eliminating the “works on my machine” problem.</p>
+<p>Docker containers are built from images, which are read-only templates describing how to create a container. These images can be shared and versioned, making it easy to distribute and update your application.</p>
+<p><strong>Why Docker?</strong></p>
+<ul>
+<li><strong>Portability:</strong> Containers are like your model’s passport, allowing it to travel seamlessly across different environments. Docker ensures your application runs the same way on a developer’s laptop, a test server, or a production cloud environment.</li>
+<li><strong>Consistency:</strong> Just as a band needs the same instruments wherever they play, Docker ensures your model has everything it needs. Containers include all dependencies, libraries, and configuration files required to run an application, ensuring consistency across deployments.</li>
+<li><strong>Efficiency:</strong> Docker containers are lightweight, meaning you can run multiple containers on a single machine without hogging resources. Unlike traditional virtual machines, containers share the host system’s kernel, reducing overhead and improving resource utilization.</li>
+<li><strong>Isolation:</strong> Just as each band member needs their space, Docker provides isolated environments, ensuring no conflicts between models. Containers run in their own isolated environment, preventing interference from other applications or processes on the host system.</li>
+</ul>
+<p><strong>Building a Docker Image:</strong> To create a Docker image, you need to write a <code>Dockerfile</code>, which is a plain text file containing instructions on how to build the image. Here’s a simple example of a <code>Dockerfile</code> for a Python application:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use an official Python runtime as a parent image</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.8-slim</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory in the container</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the current directory contents into the container at /app</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . /app</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Install any needed packages specified in requirements.txt</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make port 80 available to the world outside this container</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 80</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Define environment variable</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> NAME World</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Run app.py when the container launches</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"app.py"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This <code>Dockerfile</code> specifies a base image (<code>python:3.8-slim</code>), sets up a working directory, copies the application code, installs dependencies, exposes a port, and defines the command to run the application.</p>
+</section>
+<section id="benefits-of-using-docker-for-deployment" class="level3">
+<h3 class="anchored" data-anchor-id="benefits-of-using-docker-for-deployment">1.4. Benefits of Using Docker for Deployment</h3>
+<p>Using Docker for deployment is akin to having a trusted roadie crew—everything runs smoother, faster, and with less hassle. Docker offers several benefits that make it an ideal choice for deploying machine learning models/</p>
+<div style="text-align: center;">
+<p><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fblockchainsimplified.com%2Fblog%2Fhow-docker-revolutionized-software-containerization%2F&amp;psig=AOvVaw3Ua5CNeMweZOplg1eYtJdA&amp;ust=1729003474615000&amp;source=images&amp;cd=vfe&amp;opi=89978449&amp;ved=0CBQQjRxqFwoTCJDNx4OOjokDFQAAAAAdAAAAABAJ" alt="Starship" style="width: 400px;"></p>
+</div>
+<p><strong>Key Benefits:</strong></p>
+<ul>
+<li><p><strong>Isolation:</strong> Just as each band member needs their space, Docker provides isolated environments, ensuring no conflicts between models. Containers run in their own sandbox, separated from the host system and other containers, preventing interference from other applications or processes. This isolation also <strong>enhances security by limiting the attack surface and potential vulnerabilities.</strong></p></li>
+<li><p><strong>Reproducibility:</strong> Docker guarantees that <em>“what happens in rehearsal stays in rehearsal,”</em> meaning your model will work anywhere it’s deployed. This reproducibility is crucial for machine learning workflows, as it ensures that the same environment used during development and testing is preserved in production. By encapsulating all dependencies and configurations in a Docker image, you can easily share and replicate your setup across different machines or teams.</p></li>
+<li><p><strong>Scalability:</strong> When your model’s performance becomes a hit, Docker allows you to scale up effortlessly, ensuring it reaches audiences far and wide. Docker containers can be deployed and managed using orchestration tools like Kubernetes, which automates the scaling, distribution, and management of containerized applications. This enables you to efficiently handle varying workloads by adding or removing containers based on demand.</p></li>
+<li><p><strong>Simplified Management:</strong> Docker streamlines the deployment process, letting you focus on the music (or in this case, the model). With Docker, you can use a single command to build, ship, and run your application, simplifying the deployment pipeline and reducing the risk of errors. Additionally, Docker Hub, a cloud-based registry service, allows you to store and distribute your images, making it easy to manage updates and versioning.</p></li>
+<li><p><strong>Resource Efficiency:</strong> Docker containers are lightweight and share the host system’s kernel, allowing you to run multiple containers on a single machine without incurring the overhead of traditional virtual machines. This efficient use of resources reduces infrastructure costs and improves performance, especially in environments with limited hardware capacity.</p></li>
+<li><p><strong>Cross-Platform Compatibility:</strong> Docker containers can run on any system that supports Docker, regardless of the underlying operating system. This cross-platform compatibility ensures that your application behaves consistently across different environments, from local development machines to cloud servers and edge devices.</p></li>
+</ul>
+<p><strong>Real-World Applications of Docker:</strong></p>
+<p>Docker is widely used across various industries to streamline the deployment and management of machine learning models. Here are a few examples:</p>
+<ol type="1">
+<li><p><strong>FinTech:</strong> Financial technology companies use Docker to deploy models for fraud detection, risk assessment, and automated trading. Docker’s isolation and security features ensure that sensitive data and algorithms are protected, while its scalability allows for real-time processing of large volumes of financial transactions.</p></li>
+<li><p><strong>Healthcare:</strong> In healthcare, Docker enables the deployment of models for medical imaging analysis, predictive diagnostics, and personalized treatment recommendations. By using containers, healthcare providers can ensure compliance with data privacy regulations and easily share models across different hospitals and research institutions.</p></li>
+<li><p><strong>E-commerce:</strong> E-commerce platforms leverage Docker to deploy recommendation engines, customer segmentation models, and demand forecasting algorithms. Docker’s resource efficiency and scalability allow these platforms to handle peak traffic during sales events and provide personalized experiences to millions of users.</p></li>
+<li><p><strong>Autonomous Vehicles:</strong> The automotive industry uses Docker to deploy machine learning models for autonomous driving, object detection, and route planning. Docker’s portability and cross-platform compatibility facilitate testing and deployment across various hardware and software configurations, accelerating the development of self-driving technologies.</p></li>
+</ol>
+</section>
+</section>
+<section id="getting-started-with-docker" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started-with-docker">2. Getting Started with Docker</h2>
+<section id="installing-and-configuring-docker" class="level3">
+<h3 class="anchored" data-anchor-id="installing-and-configuring-docker">2.1. Installing and Configuring Docker</h3>
+<p>Before we can start containerizing applications, we need to install Docker on our system.</p>
+<p>Docker provides a seamless installation process across various platforms, including Windows, macOS, and Linux.</p>
+<p>Here’s a comprehensive guide on installing Docker across different platforms and ensuring it’s ready for containerizing applications:</p>
+</section>
+<section id="installing-docker" class="level3">
+<h3 class="anchored" data-anchor-id="installing-docker">Installing Docker</h3>
+<p>Before diving into containerization, you need to install Docker on your system. Docker offers a straightforward installation process across various operating systems, including Windows, macOS, and Linux.</p>
+</section>
+<section id="installation-steps" class="level3">
+<h3 class="anchored" data-anchor-id="installation-steps">Installation Steps</h3>
+<section id="docker-desktop-windows-macos" class="level4">
+<h4 class="anchored" data-anchor-id="docker-desktop-windows-macos">1. <strong>Docker Desktop (Windows &amp; macOS)</strong></h4>
+<p>For users on Windows and macOS, <strong>Docker Desktop</strong> is the most convenient option. It provides a graphical user interface (GUI) and integrates seamlessly with your system for efficient container management.</p>
+<ul>
+<li><strong>Download</strong>: Visit the <a href="https://docs.docker.com/desktop/install/windows-install/">official Docker website</a> to download Docker Desktop.</li>
+<li><strong>Installation</strong>:
+<ul>
+<li>Follow the installation instructions provided on the website.</li>
+<li>During the installation, you may need to enable WSL 2 (Windows Subsystem for Linux) for Windows users, as this is required for Docker to run smoothly.</li>
+</ul></li>
+</ul>
+</section>
+<section id="linux-installation" class="level4">
+<h4 class="anchored" data-anchor-id="linux-installation">2. <strong>Linux Installation</strong></h4>
+<p>For Linux users, Docker can be installed using package managers specific to your distribution.</p>
+<ul>
+<li><p><strong>Ubuntu</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install apt-transport-https ca-certificates curl software-properties-common</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg <span class="kw">|</span> <span class="fu">sudo</span> apt-key add <span class="at">-</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">"deb [arch=amd64] https://download.docker.com/linux/ubuntu </span><span class="va">$(</span><span class="ex">lsb_release</span> <span class="at">-cs</span><span class="va">)</span><span class="st"> stable"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install docker-ce</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>CentOS</strong>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> yum install <span class="at">-y</span> yum-utils</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> yum-config-manager <span class="at">--add-repo</span> https://download.docker.com/linux/centos/docker-ce.repo</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> yum install docker-ce</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>For detailed installation instructions for different Linux distributions, refer to the <a href="https://docs.docker.com/engine/install/">official Docker documentation</a>.</p></li>
+</ul>
+</section>
+<section id="configuration" class="level4">
+<h4 class="anchored" data-anchor-id="configuration">3. <strong>Configuration</strong></h4>
+<p>After installation, you may need to configure Docker to suit your development environment:</p>
+<ul>
+<li><strong>Start Docker on Boot</strong>: Ensure Docker starts automatically when your system boots up.</li>
+<li><strong>Network Settings</strong>: Configure any specific network settings as required for your applications.</li>
+<li><strong>User Permissions</strong>: Manage user permissions to allow specific users to run Docker commands without needing <code>sudo</code>.</li>
+</ul>
+<p>You can find guidance on these configurations in the <a href="https://docs.docker.com/engine/install/">Docker documentation</a>.</p>
+</section>
+<section id="verify-installation" class="level4">
+<h4 class="anchored" data-anchor-id="verify-installation">4. <strong>Verify Installation</strong></h4>
+<p>Once you’ve completed the installation, it’s important to verify that Docker is working correctly:</p>
+<ul>
+<li><p>Open your terminal and run the following command:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>If Docker is installed properly, this command will display the installed Docker version, confirming that Docker is ready for use.</p></li>
+</ul>
+</section>
+</section>
+<section id="key-concepts-images-containers-dockerfile" class="level3">
+<h3 class="anchored" data-anchor-id="key-concepts-images-containers-dockerfile">2.2. Key Concepts: Images, Containers, Dockerfile</h3>
+<p>Understanding Docker’s core concepts is crucial for effectively using this powerful tool. Let’s break down these concepts:</p>
+<p><strong>Images:</strong> Docker images are the blueprints for containers. <strong>They contain everything needed to run an application, including the code, runtime, libraries, and environment variables.</strong> Images are built from a set of instructions defined in a <code>Dockerfile</code> and can be shared via Docker Hub or private registries.</p>
+<p><strong>Containers:</strong> Containers are the running instances of Docker images. <strong>They encapsulate an application and its environment, ensuring consistent behavior across different systems.</strong> Containers are lightweight and can be started, stopped, and scaled independently, making them ideal for microservices architectures.</p>
+<p><strong>Dockerfile:</strong> A <code>Dockerfile</code> is a text file containing a series of instructions on how to build a Docker image. <strong>It specifies the base image, application code, dependencies, and any additional configuration needed.</strong> Writing a <code>Dockerfile</code> is the first step in containerizing an application.</p>
+</section>
+<section id="creating-a-simple-docker-image-for-a-fastapi-application" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-simple-docker-image-for-a-fastapi-application">2.3. Creating a Simple Docker Image for a FastAPI Application</h3>
+<p>Let’s create a simple Docker image for a FastAPI application. This hands-on example will guide you through the process of writing a <code>Dockerfile</code> and building an image.</p>
+<p><strong>Step-by-Step Guide:</strong></p>
+<ol type="1">
+<li><strong>Create a FastAPI Application:</strong> Start by creating a simple FastAPI application. For this example, we’ll use a basic FastAPI app:</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># app.py</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> read_root():</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"Hello"</span>: <span class="st">"Docker"</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li><strong>Write a Dockerfile:</strong> Create a <code>Dockerfile</code> in the same directory as your FastAPI application. Here’s a simple example:</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use an official Python runtime as a parent image</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.8-slim</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory in the container</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the current directory contents into the container at /app</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . /app</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Install FastAPI and Uvicorn</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> fastapi uvicorn</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make port 80 available to the world outside this container</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 80</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Run app.py when the container launches</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"uvicorn"</span>, <span class="st">"app:app"</span>, <span class="st">"--host"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--port"</span>, <span class="st">"80"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li><strong>Build the Docker Image:</strong> Open your terminal, navigate to the directory containing the <code>Dockerfile</code>, and run the following command to build the image:</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-fastapi-app .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command tells Docker to build an image named <code>my-fastapi-app</code> using the current directory as the build context.</p>
+<ol start="4" type="1">
+<li><strong>Verify the Image:</strong> Once the build is complete, verify that the image was created successfully by running:</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> images</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should see <code>my-fastapi-app</code> listed among the available images.</p>
+</section>
+<section id="running-and-managing-docker-containers" class="level3">
+<h3 class="anchored" data-anchor-id="running-and-managing-docker-containers">2.4. Running and Managing Docker Containers</h3>
+<p>Now that we have a Docker image, let’s run it as a container and explore how to manage it.</p>
+<p><strong>Running a Container:</strong></p>
+<ol type="1">
+<li><strong>Start the Container:</strong> Use the <code>docker run</code> command to start a container from the image we just built:</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 4000:80 my-fastapi-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command runs the container in detached mode (<code>-d</code>) and maps port 4000 on your host to port 80 in the container, allowing you to access the application via <code>http://localhost:4000</code>.</p>
+<ol start="2" type="1">
+<li><strong>Verify the Container:</strong> Check that the container is running by listing all active containers:</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should see <code>my-fastapi-app</code> in the list, along with its container ID and status.</p>
+<p><strong>Managing Containers:</strong></p>
+<ol type="1">
+<li><strong>Stopping a Container:</strong> To stop a running container, use the <code>docker stop</code> command followed by the container ID or name:</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop <span class="op">&lt;</span>container_id<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li><strong>Removing a Container:</strong> Once a container is stopped, you can remove it using the <code>docker rm</code> command:</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm <span class="op">&lt;</span>container_id<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li><strong>Viewing Logs:</strong> To view the logs of a running container, use the <code>docker logs</code> command:</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is useful for debugging and monitoring your application’s output.</p>
+<ol start="4" type="1">
+<li><strong>Accessing a Container’s Shell:</strong> If you need to interact with a container’s file system or execute commands inside it, use the <code>docker exec</code> command to open a shell session:</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>container_id<span class="op">&gt;</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="dockerizing-a-machine-learning-application" class="level2">
+<h2 class="anchored" data-anchor-id="dockerizing-a-machine-learning-application">3. Dockerizing a Machine Learning Application</h2>
+<section id="introduction-to-the-example-machine-learning-application-boston-housing-pricing" class="level4">
+<h4 class="anchored" data-anchor-id="introduction-to-the-example-machine-learning-application-boston-housing-pricing">3.1 Introduction to the Example Machine Learning Application (Boston Housing Pricing)</h4>
+<p>Imagine you’re a real estate wizard 🧙, and you have a magical tool that can predict house prices in Boston based on various features.</p>
+<p>That’s exactly what we’re building—a machine learning model that predicts housing prices. But we’re not stopping there! We’ll wrap this model in a FastAPI application so others can use it to make predictions.</p>
+<p>Think of it as building a crystal ball 🔮 that anyone can access via the internet!</p>
+</section>
+<section id="about-the-boston-housing-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="about-the-boston-housing-dataset">3.1.1 About the Boston Housing Dataset</h4>
+<ul>
+<li><strong>Dataset</strong>: Contains information about Boston house prices, such as crime rate, number of rooms, and distance to employment centers.</li>
+<li><strong>Goal</strong>: Predict the median value of owner-occupied homes (in $1000’s) based on these features.</li>
+</ul>
+<div style="text-align: center;">
+<p><img src="
+https://miro.medium.com/v2/resize:fit:1000/1*FHQOSHMMT07CbXpklk1Ehw.jpeg
+" alt="Starship" style="width: 400px;"></p>
+</div>
+<p><strong>Project Structure</strong></p>
+<p>Let’s outline the structure of our project:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">boston_housing_app/</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> app.py</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> model.joblib</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> requirements.txt</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> Dockerfile</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="training-the-machine-learning-model" class="level4">
+<h4 class="anchored" data-anchor-id="training-the-machine-learning-model">3.1.2 Training the Machine Learning Model</h4>
+<p>First, we’ll train our model and save it for later use in our FastAPI app.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train_model.py</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_boston</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>boston <span class="op">=</span> load_boston()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.DataFrame(boston.data, columns<span class="op">=</span>boston.feature_names)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> boston.target</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the model</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>joblib.dump(model, <span class="st">'model.joblib'</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model trained and saved!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>🔥Explanation</strong>: We load the dataset, split it, train a Linear Regression model, and save it using <code>joblib</code>.</p>
+<p><strong>Run the Training Script</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> train_model.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After running this script, you’ll have a <code>model.joblib</code> file saved in your directory.</p>
+<hr>
+</section>
+<section id="building-the-fastapi-application" class="level4">
+<h4 class="anchored" data-anchor-id="building-the-fastapi-application">3.1.3 Building the FastAPI Application</h4>
+<p>Now, let’s create a FastAPI application that loads this model and provides an endpoint to make predictions.</p>
+<p>Add <code>fastapi</code> and <code>uvicorn</code> to your <code>requirements.txt</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a># requirements.txt</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fastapi</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>uvicorn[standard]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>pandas</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>scikit-learn</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>joblib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># app.py</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the app</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(title<span class="op">=</span><span class="st">"Boston Housing Price Prediction API"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the model</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> joblib.load(<span class="st">'model.joblib'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the request body</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PredictionRequest(BaseModel):</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    CRIM: <span class="bu">float</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    ZN: <span class="bu">float</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    INDUS: <span class="bu">float</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    CHAS: <span class="bu">float</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    NOX: <span class="bu">float</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    RM: <span class="bu">float</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    AGE: <span class="bu">float</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    DIS: <span class="bu">float</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    RAD: <span class="bu">float</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    TAX: <span class="bu">float</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    PTRATIO: <span class="bu">float</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    B: <span class="bu">float</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    LSTAT: <span class="bu">float</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the response</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PredictionResponse(BaseModel):</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    price: <span class="bu">float</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Root path</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="at">@app.get</span>(<span class="st">"/"</span>)</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_root():</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"message"</span>: <span class="st">"Welcome to the Boston Housing Price Prediction API!"</span>}</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction endpoint</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/predict"</span>, response_model<span class="op">=</span>PredictionResponse)</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(request: PredictionRequest):</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> request.<span class="bu">dict</span>()</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame([data])</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    prediction <span class="op">=</span> model.predict(df)[<span class="dv">0</span>]</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"price"</span>: prediction}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>🔥Explanation</strong>:</p>
+<ul>
+<li><strong>FastAPI App</strong>: We initialize a FastAPI app.</li>
+<li><strong>Model Loading</strong>: We load the pre-trained model.</li>
+<li><strong>Request and Response Models</strong>: Using Pydantic’s <code>BaseModel</code> to define the expected input and output data structures.</li>
+<li><strong>Endpoints</strong>:
+<ul>
+<li><strong>GET <code>/</code></strong>: A welcome message.</li>
+<li><strong>POST <code>/predict</code></strong>: Accepts house features and returns the predicted price.</li>
+</ul></li>
+</ul>
+<p><strong>Running the FastAPI App Locally</strong></p>
+<p>To run the app locally, you can use Uvicorn:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> app:app <span class="at">--host</span> 0.0.0.0 <span class="at">--port</span> 8000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Open your browser and navigate to <code>http://localhost:8000/docs</code> to see the interactive API docs provided by FastAPI! 🎉</p>
+<hr>
+</section>
+<section id="creating-a-dockerfile-for-the-application" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-dockerfile-for-the-application">3.2 Creating a Dockerfile for the Application</h3>
+<p>Now that we have our FastAPI app ready, let’s containerize it using Docker so we can deploy it anywhere.</p>
+<section id="understanding-the-dockerfile" class="level4">
+<h4 class="anchored" data-anchor-id="understanding-the-dockerfile">3.2.1 Understanding the Dockerfile</h4>
+<p>A <code>Dockerfile</code> is like a recipe for creating a Docker image. It tells Docker what base image to use, what files to copy, what commands to run, and which ports to expose.</p>
+<p><strong>Writing the Dockerfile</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use an official Python runtime as a parent image</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.9-slim</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory in the container</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the requirements file into the container</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Install dependencies</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the rest of the code into the container</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Expose port 8000</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 8000</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the application</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"uvicorn"</span>, <span class="st">"app:app"</span>, <span class="st">"--host"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--port"</span>, <span class="st">"8000"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="explanation-of-the-dockerfile" class="level4">
+<h4 class="anchored" data-anchor-id="explanation-of-the-dockerfile">3.2.2 Explanation of the Dockerfile</h4>
+<ul>
+<li><code>FROM python:3.9-slim</code>: We start from a slim version of Python 3.9 to keep the image lightweight.</li>
+<li><code>WORKDIR /app</code>: Sets the working directory inside the container to <code>/app</code>.</li>
+<li><code>COPY requirements.txt .</code>: Copies <code>requirements.txt</code> into the container.</li>
+<li><code>RUN pip install --no-cache-dir -r requirements.txt</code>: Installs the dependencies without caching to save space.</li>
+<li><code>COPY . .</code>: Copies all files from the current directory into the container.</li>
+<li><code>EXPOSE 8000</code>: Exposes port <code>8000</code> for the app.</li>
+<li><code>CMD [...]</code>: The command to run when the container starts. Here, we start the Uvicorn server.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="defining-dependencies-and-configurations" class="level3">
+<h3 class="anchored" data-anchor-id="defining-dependencies-and-configurations">3.3 Defining Dependencies and Configurations</h3>
+<p>Dependencies are crucial. They ensure that our application has everything it needs to run correctly inside the container.</p>
+<section id="the-requirements.txt-file" class="level4">
+<h4 class="anchored" data-anchor-id="the-requirements.txt-file">3.3.1 The <code>requirements.txt</code> File</h4>
+<p>We’ve already defined our dependencies in the <code>requirements.txt</code> file:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fastapi</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>uvicorn[standard]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>pandas</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>scikit-learn</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>joblib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="environment-variables-optional" class="level4">
+<h4 class="anchored" data-anchor-id="environment-variables-optional">3.3.2 Environment Variables (Optional)</h4>
+<p>If your application requires environment variables (like API keys, database URLs), you can define them in the Dockerfile using <code>ENV</code> or pass them at runtime.</p>
+<p>Example in Dockerfile:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> MODEL_NAME=<span class="st">"Boston Housing Predictor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In <code>app.py</code>, you can access it:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>model_name <span class="op">=</span> os.getenv(<span class="st">"MODEL_NAME"</span>, <span class="st">"Default Model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>But be cautious! For sensitive information like API keys, it’s better to pass them at runtime or use Docker secrets.</strong></p>
+<hr>
+</section>
+</section>
+<section id="exposing-ports-and-setting-the-run-command" class="level3">
+<h3 class="anchored" data-anchor-id="exposing-ports-and-setting-the-run-command">3.4 Exposing Ports and Setting the Run Command</h3>
+<p>Exposing ports is like opening the door 🚪 of your container to the outside world so that others can interact with your application.</p>
+<section id="exposing-ports" class="level4">
+<h4 class="anchored" data-anchor-id="exposing-ports">3.4.1 Exposing Ports</h4>
+<p>In the Dockerfile:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 8000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This tells Docker that the container listens on port 8000 during runtime.</p>
+</section>
+<section id="setting-the-run-command" class="level4">
+<h4 class="anchored" data-anchor-id="setting-the-run-command">3.4.2 Setting the Run Command</h4>
+<p>The <code>CMD</code> instruction specifies the command to run when the container starts:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"uvicorn"</span>, <span class="st">"app:app"</span>, <span class="st">"--host"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--port"</span>, <span class="st">"8000"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>uvicorn app:app</code>: Runs the <code>app</code> object from <code>app.py</code> using Uvicorn.</li>
+<li><code>--host 0.0.0.0</code>: Makes the server accessible externally.</li>
+<li><code>--port 8000</code>: Runs the server on port 8000.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="building-and-running-the-docker-container" class="level3">
+<h3 class="anchored" data-anchor-id="building-and-running-the-docker-container">3.5 Building and Running the Docker Container</h3>
+<p>Time to bring everything together and see the magic happen! 🎩✨</p>
+<section id="build-the-docker-image" class="level4">
+<h4 class="anchored" data-anchor-id="build-the-docker-image">3.5.1 Build the Docker Image</h4>
+<p>In your terminal, navigate to the project directory and run:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> boston-housing-api .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>docker build</code>: Builds an image from a Dockerfile.</li>
+<li><code>-t boston-housing-api</code>: Tags the image with the name <code>boston-housing-api</code>.</li>
+<li><code>.</code>: Specifies the build context (current directory).</li>
+</ul>
+</section>
+<section id="run-the-docker-container" class="level4">
+<h4 class="anchored" data-anchor-id="run-the-docker-container">3.5.2 Run the Docker Container</h4>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 8000:8000 boston-housing-api</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>-d</code>: Runs the container in detached mode (in the background).</li>
+<li><code>-p 8000:8000</code>: Maps port 8000 of your local machine to port 8000 of the container.</li>
+<li><code>boston-housing-api</code>: The name of the image to run.</li>
+</ul>
+</section>
+<section id="verify-the-application-is-running" class="level4">
+<h4 class="anchored" data-anchor-id="verify-the-application-is-running">3.5.3 Verify the Application is Running</h4>
+<p>Open your browser and go to <code>http://localhost:8000/docs</code>. You should see the interactive API documentation.</p>
+<ul>
+<li>Click on the <code>/predict</code> endpoint.</li>
+<li>Click <strong>Try it out</strong>.</li>
+<li>Enter sample data. For example:</li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"CRIM"</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"ZN"</span><span class="fu">:</span> <span class="fl">18.0</span><span class="fu">,</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"INDUS"</span><span class="fu">:</span> <span class="fl">2.31</span><span class="fu">,</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"CHAS"</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"NOX"</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">538</span><span class="fu">,</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RM"</span><span class="fu">:</span> <span class="fl">6.575</span><span class="fu">,</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"AGE"</span><span class="fu">:</span> <span class="fl">65.2</span><span class="fu">,</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"DIS"</span><span class="fu">:</span> <span class="fl">4.09</span><span class="fu">,</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RAD"</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"TAX"</span><span class="fu">:</span> <span class="fl">296.0</span><span class="fu">,</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"PTRATIO"</span><span class="fu">:</span> <span class="fl">15.3</span><span class="fu">,</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"B"</span><span class="fu">:</span> <span class="fl">396.9</span><span class="fu">,</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"LSTAT"</span><span class="fu">:</span> <span class="fl">4.98</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Click <strong>Execute</strong>.</li>
+<li>You should receive a predicted price in the response!</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="deploying-the-docker-image" class="level3">
+<h3 class="anchored" data-anchor-id="deploying-the-docker-image">3.6 Deploying the Docker Image</h3>
+<p>Now that our application is containerized, we can deploy it anywhere Docker is supported—be it a cloud service like AWS, Azure, Google Cloud, or even on a Raspberry Pi! Let’s go over a simple deployment to a cloud service.</p>
+<div style="text-align: center;">
+<p><img src="https://www.developpez.net/forums/attachments/p624417d1/a/a/a" alt="Starship" style="width: 400px;"></p>
+</div>
+</section>
+<section id="deploy-to-heroku-using-container-registry" class="level3">
+<h3 class="anchored" data-anchor-id="deploy-to-heroku-using-container-registry">3.6.1 Deploy to Heroku (Using Container Registry)</h3>
+<p>Heroku is a cloud platform that supports Docker deployments via its Container Registry.</p>
+<p><strong>Prerequisites</strong>:</p>
+<ul>
+<li>Install the <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
+<li>Create a Heroku account.</li>
+</ul>
+<p><strong>Steps</strong>:</p>
+<ol type="1">
+<li><p><strong>Login to Heroku Container Registry</strong>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> login</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> container:login</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Create a New Heroku App</strong>:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> create boston-housing-api-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Push the Docker Image to Heroku</strong>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> container:push web <span class="at">-a</span> boston-housing-api-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Release the Image</strong>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> container:release web <span class="at">-a</span> boston-housing-api-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Open the App</strong>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku</span> open <span class="at">-a</span> boston-housing-api-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>Now your API is live on the internet! 🌐</p>
+</section>
+<section id="deploy-to-aws-elastic-container-service-ecs" class="level3">
+<h3 class="anchored" data-anchor-id="deploy-to-aws-elastic-container-service-ecs">3.6.2 Deploy to AWS Elastic Container Service (ECS)</h3>
+<p>Deploying to AWS ECS involves more steps but offers robust scalability.</p>
+<p><strong>High-Level Steps</strong>:</p>
+<ul>
+<li><strong>Create a Docker Repository</strong> in Amazon Elastic Container Registry (ECR).</li>
+<li><strong>Push Your Docker Image</strong> to ECR.</li>
+<li><strong>Create a Task Definition</strong> in ECS using your image.</li>
+<li><strong>Run a Service</strong> with the task definition.</li>
+<li><strong>Set Up a Load Balancer</strong> to route traffic to your service.</li>
+</ul>
+<p>Due to the complexity, consider following AWS’s detailed documentation or use AWS Fargate for serverless container deployment.</p>
+</section>
+<section id="recap-and-project-structure" class="level3">
+<h3 class="anchored" data-anchor-id="recap-and-project-structure">Recap and Project Structure</h3>
+<p>Let’s revisit our project structure:</p>
+<pre><code>boston_housing_app/
+├── app.py
+├── model.joblib
+├── requirements.txt
+├── Dockerfile
+├── train_model.py
+└── README.md</code></pre>
+<ul>
+<li><strong>app.py</strong>: The FastAPI application.</li>
+<li><strong>model.joblib</strong>: The saved machine learning model.</li>
+<li><strong>requirements.txt</strong>: Lists all Python dependencies.</li>
+<li><strong>Dockerfile</strong>: Instructions to build the Docker image.</li>
+<li><strong>train_model.py</strong>: Script to train and save the model.</li>
+<li><strong>README.md</strong>: Documentation for your project.</li>
+</ul>
+</section>
+</section>
+<section id="introduction-to-github-actions" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-github-actions">4. Introduction to GitHub Actions</h2>
+<p>The goal of this section is to introduce you to the powerful world of <strong>Continuous Integration (CI)</strong> and <strong>Continuous Delivery (CD)</strong>. By the end of this chapter, you’ll have a fully automated pipeline, pushing your FastAPI app from your codebase straight to production (we’ll use <strong>Heroku</strong> as an example deployment platform).</p>
+<p>But don’t let the technical jargon scare you—GitHub Actions is just like setting up a bunch of automated robot assistants to take care of the nitty-gritty, so you can focus on coding cool stuff!</p>
+<section id="principles-of-continuous-integration-and-continuous-delivery-cicd" class="level3">
+<h3 class="anchored" data-anchor-id="principles-of-continuous-integration-and-continuous-delivery-cicd">4.1 Principles of Continuous Integration and Continuous Delivery (CI/CD)</h3>
+<p>Let’s start with the big picture: <strong>CI/CD</strong>.</p>
+<p>These are the magic words behind modern software development.</p>
+<p>It’s what allows big companies like Google and Netflix to deploy thousands of changes every day. So, what are they?</p>
+<section id="continuous-integration-ci" class="level4">
+<h4 class="anchored" data-anchor-id="continuous-integration-ci">4.1.1 Continuous Integration (CI)</h4>
+<p><strong>Think of CI as your safety net.</strong></p>
+<p>It’s the practice of automatically testing and integrating small changes into your codebase.</p>
+<p>Imagine you’re writing your FastAPI app and every time you push your code to GitHub, all your tests automatically run.</p>
+<p>If something breaks, you get notified instantly, instead of finding out when the app is already deployed (which we all know is a nightmare).</p>
+<p><strong>Key Benefits of CI:</strong></p>
+<ul>
+<li><strong>Instant feedback</strong>: CI helps catch bugs early.</li>
+<li><strong>Stable codebase</strong>: Your main branch is always deployable.</li>
+<li><strong>Developer collaboration</strong>: Multiple people can work on the same codebase without conflicts.</li>
+</ul>
+</section>
+<section id="continuous-delivery-cd" class="level4">
+<h4 class="anchored" data-anchor-id="continuous-delivery-cd">4.1.2 Continuous Delivery (CD)</h4>
+<p>CD is the natural extension of CI. It automates the release process so that your application is always in a deployable state. With CD, once your code passes the tests, it’s automatically pushed to a staging or production environment—without any manual steps.</p>
+<p><strong>Key Benefits of CD:</strong></p>
+<ul>
+<li><strong>Frequent releases</strong>: You can deploy to production multiple times a day.</li>
+<li><strong>Fewer bugs</strong>: Smaller, more frequent releases mean less complexity.</li>
+<li><strong>Improved confidence</strong>: Developers are less afraid of deploying code since it’s automated and tested.</li>
+</ul>
+</section>
+</section>
+<section id="overview-of-github-actions-and-its-components" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-github-actions-and-its-components">4.2 Overview of GitHub Actions and Its Components</h3>
+<p>Now that you’re familiar with CI/CD, let’s talk about <strong>GitHub Actions</strong>—your tool to automate everything from running tests to deploying applications. GitHub Actions are workflows that are triggered by events like a pull request, a new commit, or even a scheduled time.</p>
+<p>**Key Components of GitHub Actions:</p>
+<ul>
+<li><strong>Workflow</strong>: A series of actions (tasks) defined in YAML format that runs when a specific event occurs.</li>
+<li><strong>Event</strong>: The trigger that starts the workflow (e.g., a push to the repository, a pull request).</li>
+<li><strong>Job</strong>: A workflow contains one or more jobs. A job contains multiple steps and runs on its own virtual machine or container.</li>
+<li><strong>Step</strong>: A step can be a shell command, a script, or a reusable action. Multiple steps make up a job.</li>
+<li><strong>Action</strong>: A predefined task that can be used in steps (e.g., <code>actions/checkout@v2</code> checks out your code).</li>
+</ul>
+<p>Think of GitHub Actions as your very own robot assistants (like WALL-E) that automatically clean up after you every time you make a mess (push code). Each assistant (job) has its own task (test the app, create a Docker image, deploy it), and they all report back to you when their tasks are done.</p>
+</section>
+<section id="creating-a-basic-github-actions-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-basic-github-actions-workflow">4.3 Creating a Basic GitHub Actions Workflow</h3>
+<p>Let’s dive into the fun part—creating our first <strong>CI pipeline</strong> using GitHub Actions. We’ll start by setting up a workflow that runs tests on our FastAPI app whenever we push changes to GitHub.</p>
+<section id="step-1-creating-the-workflow-file" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-creating-the-workflow-file">4.3.1 Step 1: Creating the Workflow File</h4>
+<p>You’ll need to create a file in your repository at <code>.github/workflows/ci.yml</code>. GitHub will automatically detect this file and run the instructions inside whenever the specified events occur.</p>
+<p>Here’s a simple workflow that: - Triggers on every <code>push</code> and <code>pull_request</code> to the <code>main</code> branch. - Runs a set of Python unit tests.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI for FastAPI Application</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repository</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="st">'3.9'</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>          pip install -r requirements.txt</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run tests</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>          pytest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="breakdown-of-workflow" class="level4">
+<h4 class="anchored" data-anchor-id="breakdown-of-workflow">4.3.2 Breakdown of Workflow</h4>
+<ul>
+<li><strong>on</strong>: This defines when the workflow will be triggered. In our case, it will trigger on a <code>push</code> or a <code>pull_request</code> to the <code>main</code> branch.</li>
+<li><strong>jobs</strong>: Defines what jobs will run. Here we have a <code>test</code> job that runs on <code>ubuntu-latest</code> (a virtual machine provided by GitHub).</li>
+<li><strong>steps</strong>: Steps are the individual tasks for each job. In this case, we:
+<ol type="1">
+<li><strong>Checkout the code</strong> using <code>actions/checkout@v2</code>.</li>
+<li><strong>Set up Python 3.9</strong> using <code>actions/setup-python@v2</code>.</li>
+<li><strong>Install dependencies</strong> from the <code>requirements.txt</code> file.</li>
+<li><strong>Run tests</strong> using <code>pytest</code>.</li>
+</ol></li>
+</ul>
+<p>This is your basic CI pipeline. Each time you push code, it automatically runs tests, letting you know if anything is broken before you deploy. Easy-peasy!</p>
+</section>
+</section>
+<section id="defining-triggers-and-jobs-for-deployment" class="level3">
+<h3 class="anchored" data-anchor-id="defining-triggers-and-jobs-for-deployment">4.4 Defining Triggers and Jobs for Deployment</h3>
+<p>Now, let’s go a step further. Testing is important, but what if you could deploy your app every time your tests pass? Enter <strong>CD</strong>.</p>
+<p>We’ll now define a trigger that not only runs tests but also deploys our FastAPI app.</p>
+<p>Here’s how you do it:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI/CD for FastAPI Application</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repository</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="st">'3.9'</span></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>          pip install -r requirements.txt</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run tests</span></span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>          pytest</span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span></span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> test</span><span class="co">  # Ensures deploy only runs if the tests pass</span></span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repository</span></span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy to Heroku</span></span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a>          heroku login</span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a>          git push heroku main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>🔥Explanation</strong>:</p>
+<ul>
+<li><strong>deploy job</strong>: Runs after the <code>test</code> job (<code>needs: test</code> ensures that deployment only happens if tests pass).</li>
+<li><strong>Deploy to Heroku</strong>: Uses <code>git push heroku main</code> to deploy the application.</li>
+</ul>
+</section>
+<section id="creating-a-deployment-workflow-for-heroku" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-deployment-workflow-for-heroku">4.5 Creating a Deployment Workflow for Heroku</h3>
+<p>Now let’s build a dedicated deployment workflow for <strong>Heroku</strong> using GitHub Actions. We’ll assume you already have a <strong>Heroku</strong> account and a deployed FastAPI app.</p>
+<section id="setup-heroku-cli" class="level4">
+<h4 class="anchored" data-anchor-id="setup-heroku-cli">4.5.1 Setup Heroku CLI</h4>
+<p>Before running the deployment commands, ensure you install the Heroku CLI:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install Heroku CLI</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">run</span><span class="kw">:</span><span class="at"> curl https://cli-assets.heroku.com/install.sh | sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="authenticating-heroku-in-github-actions" class="level4">
+<h4 class="anchored" data-anchor-id="authenticating-heroku-in-github-actions">4.5.2 Authenticating Heroku in GitHub Actions</h4>
+<p>You’ll need to authenticate GitHub Actions to access your Heroku app. For this, we’ll use <strong>Heroku API keys</strong> (don’t worry, we’ll cover how to keep these secure in the next section).</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Authenticate Heroku</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">HEROKU_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.HEROKU_API_KEY }}</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">  run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    echo "machine api.heroku.com" &gt; ~/.netrc</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    echo "  login ${{ secrets.HEROKU_EMAIL }}" &gt;&gt; ~/.netrc</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    echo "  password ${{ secrets.HEROKU_API_KEY }}" &gt;&gt; ~/.netrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This authentication step uses the <strong>Heroku API Key</strong> and email (stored securely in <strong>GitHub Secrets</strong>—more on this soon).</p>
+</section>
+<section id="deploy-your-fastapi-app" class="level4">
+<h4 class="anchored" data-anchor-id="deploy-your-fastapi-app">4.5.3 Deploy Your FastAPI App</h4>
+<p>The final step is to deploy your app with Heroku:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy to Heroku</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">run</span><span class="kw">:</span><span class="at"> git push heroku main</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="using-secrets-for-sensitive-information" class="level3">
+<h3 class="anchored" data-anchor-id="using-secrets-for-sensitive-information">4.6 Using Secrets for Sensitive Information</h3>
+<p>We’ve mentioned <strong>GitHub Secrets</strong>, which is how we securely store sensitive information like API keys, credentials, or access tokens.</p>
+<ul>
+<li>Go to your repository on GitHub.</li>
+<li>Navigate to <strong>Settings</strong> -&gt; <strong>Secrets</strong> -&gt; <strong>Actions</strong>.</li>
+<li>Add the following secrets:
+<ul>
+<li><strong>HEROKU_API_KEY</strong>: Your Heroku API key.</li>
+<li><strong>HEROKU_EMAIL</strong>: The email associated with your Heroku account.</li>
+</ul></li>
+</ul>
+<p>Now, your workflow can use these secrets securely by referencing them as secrets.HEROKU_API_KEY and secrets.HEROKU_EMAIL.</p>
+</section>
+</section>
+<section id="advanced-tools-and-technologies" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-tools-and-technologies">5. Advanced Tools and Technologies</h2>
+<p>Welcome to the final chapter of your FastAPI journey!</p>
+<p>At this point, you’ve learned how to build, containerize, and deploy your machine learning app using Docker, GitHub Actions, and Heroku. Now, let’s explore the next level of deployment tools and technologies.</p>
+<p>This is where you unlock the door to <strong>scalability</strong>, <strong>flexibility</strong>, and <strong>enterprise-grade cloud infrastructure</strong>.</p>
+<section id="exploring-other-cloud-platforms-for-deployment-aws-gcp-azure" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-other-cloud-platforms-for-deployment-aws-gcp-azure">5.1 Exploring Other Cloud Platforms for Deployment (AWS, GCP, Azure)</h3>
+<p>In the previous section, we deployed our FastAPI app to <strong>Heroku</strong>—a popular platform for fast deployments. But, as your app grows, you might need more flexibility and control over the infrastructure. That’s where the big players—<strong>AWS</strong>, <strong>GCP</strong>, and <strong>Azure</strong>—come into play. These platforms offer a wide range of services tailored for enterprise applications.</p>
+<section id="aws-amazon-web-services" class="level4">
+<h4 class="anchored" data-anchor-id="aws-amazon-web-services">AWS (Amazon Web Services)</h4>
+<p>Amazon Web Services is the largest cloud provider in the world. AWS has <strong>Elastic Beanstalk</strong>, which simplifies deploying FastAPI apps. It abstracts much of the underlying infrastructure, but if you need full control, you can use <strong>EC2</strong> instances, <strong>S3</strong> for storage, and <strong>RDS</strong> for databases.</p>
+<p>Here’s how you can deploy a FastAPI app using AWS Elastic Beanstalk:</p>
+<ol type="1">
+<li><p><strong>Install the AWS CLI</strong>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install awsebcli</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Initialize Your Application</strong>: Inside your project directory:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">eb</span> init <span class="at">-p</span> python-3.8 fastapi-app <span class="at">--region</span> <span class="op">&lt;</span>your-region<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Create and Deploy the Application</strong>:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">eb</span> create fastapi-env</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="ex">eb</span> deploy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>AWS gives you deep control over the configuration, security, and scaling of your application, which is perfect for enterprise-scale apps.</p>
+</section>
+<section id="google-cloud-platform-gcp" class="level4">
+<h4 class="anchored" data-anchor-id="google-cloud-platform-gcp">Google Cloud Platform (GCP)</h4>
+<p>GCP offers <strong>App Engine</strong>, <strong>Compute Engine</strong>, and <strong>Cloud Run</strong> for deploying FastAPI applications. <strong>App Engine</strong> is the easiest way to deploy apps without managing servers, while <strong>Cloud Run</strong> allows you to deploy containerized applications.</p>
+<p>Deploying your FastAPI app using <strong>Google App Engine</strong>:</p>
+<ol type="1">
+<li><p><strong>Install the Google Cloud SDK</strong>:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://sdk.cloud.google.com <span class="kw">|</span> <span class="fu">bash</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Create the App Engine Configuration File (<code>app.yaml</code>)</strong>:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runtime</span><span class="kw">:</span><span class="at"> python38</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">entrypoint</span><span class="kw">:</span><span class="at"> uvicorn main:app --host 0.0.0.0 --port $PORT</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Deploy the Application</strong>:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> app deploy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>GCP is known for its powerful machine learning services and data analytics tools, making it a great choice for apps that require heavy data processing.</p>
+</section>
+<section id="azure" class="level4">
+<h4 class="anchored" data-anchor-id="azure">Azure</h4>
+<p><strong>Azure App Service</strong> and <strong>Azure Kubernetes Service (AKS)</strong> are the primary deployment platforms in the Microsoft cloud ecosystem. <strong>Azure App Service</strong> simplifies the deployment process while <strong>AKS</strong> offers enterprise-grade scalability for containerized applications.</p>
+<p>Steps to deploy using <strong>Azure App Service</strong>:</p>
+<ol type="1">
+<li><p><strong>Install the Azure CLI</strong>:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">az</span> login</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Create an App Service Plan and Web App</strong>:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">az</span> webapp up <span class="at">--runtime</span> <span class="st">"PYTHON:3.8"</span> <span class="at">--name</span> <span class="op">&lt;</span>app-name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Deploy the Application</strong>: Simply push your changes to the web app using Git or the Azure CLI.</p></li>
+</ol>
+<p><strong>Azure</strong> offers deep integration with Microsoft’s other tools and services, which is useful if you’re working in an enterprise environment already using Microsoft products.</p>
+</section>
+</section>
+<section id="using-container-orchestration-tools-like-kubernetes" class="level3">
+<h3 class="anchored" data-anchor-id="using-container-orchestration-tools-like-kubernetes">5.2 Using Container Orchestration Tools like Kubernetes</h3>
+<p>Deploying individual Docker containers is great, but what if you want to scale up? That’s where <strong>Kubernetes</strong> comes into play. <strong>Kubernetes</strong> is the king of container orchestration. It helps you manage, scale, and maintain containerized applications across multiple servers (nodes).</p>
+<p>Imagine Kubernetes as the traffic manager of your container city. It ensures that all traffic goes to the right containers (pods), scales the number of containers up or down based on demand, and keeps everything running smoothly.</p>
+<section id="why-use-kubernetes" class="level4">
+<h4 class="anchored" data-anchor-id="why-use-kubernetes">Why Use Kubernetes?</h4>
+<ul>
+<li><strong>Scalability</strong>: Kubernetes automatically scales your application based on the number of requests.</li>
+<li><strong>Self-Healing</strong>: If one of your containers crashes, Kubernetes automatically restarts it.</li>
+<li><strong>Load Balancing</strong>: Kubernetes balances traffic across your containers so no one pod is overwhelmed.</li>
+<li><strong>Deployment Rollbacks</strong>: You can easily roll back to a previous version if something goes wrong.</li>
+</ul>
+</section>
+<section id="deploying-fastapi-on-kubernetes" class="level4">
+<h4 class="anchored" data-anchor-id="deploying-fastapi-on-kubernetes">Deploying FastAPI on Kubernetes</h4>
+<p>Here’s a basic overview of how to get your FastAPI app running on <strong>Kubernetes</strong>:</p>
+<ol type="1">
+<li><p><strong>Create a Docker Image</strong> for your FastAPI app (we’ve done this earlier).</p></li>
+<li><p><strong>Create a Kubernetes Deployment</strong>:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> fastapi-app</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> fastapi</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> fastapi</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> fastapi-container</span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;your-docker-image&gt;</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Create a Service</strong> to expose your app to the internet:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> fastapi-service</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> fastapi</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> LoadBalancer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Deploy on Kubernetes</strong>:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> apply <span class="at">-f</span> deployment.yaml</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> apply <span class="at">-f</span> service.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>You can deploy Kubernetes clusters on <strong>AWS (EKS)</strong>, <strong>GCP (GKE)</strong>, or <strong>Azure (AKS)</strong>, giving you the power to scale across the cloud.</p>
+</section>
+</section>
+<section id="integrating-with-managed-machine-learning-services" class="level3">
+<h3 class="anchored" data-anchor-id="integrating-with-managed-machine-learning-services">5.3 Integrating with Managed Machine Learning Services</h3>
+<p>As data professionals, one of the coolest things you can do is integrate your FastAPI app with <strong>managed machine learning services</strong>. These cloud services take care of the heavy lifting, allowing you to scale and deploy machine learning models seamlessly.</p>
+<section id="why-use-managed-ml-services" class="level4">
+<h4 class="anchored" data-anchor-id="why-use-managed-ml-services">Why Use Managed ML Services?</h4>
+<ul>
+<li><strong>Simplified Infrastructure</strong>: You don’t have to worry about setting up complex machine learning environments.</li>
+<li><strong>Auto-Scaling</strong>: Cloud providers automatically scale your ML models based on usage.</li>
+<li><strong>Integrations</strong>: These platforms come with tools for deploying, monitoring, and managing models in production.</li>
+</ul>
+<p>Let’s look at how you can integrate with the big three: AWS, GCP, and Azure.</p>
+</section>
+<section id="aws-sagemaker" class="level4">
+<h4 class="anchored" data-anchor-id="aws-sagemaker">AWS SageMaker</h4>
+<p><strong>SageMaker</strong> is AWS’s fully managed machine learning service. You can build, train, and deploy ML models directly from SageMaker, and integrate the deployed model into your FastAPI app.</p>
+<p>Steps to integrate SageMaker with FastAPI: 1. <strong>Train and Deploy Your Model on SageMaker</strong>. ```python import sagemaker from sagemaker import get_execution_role</p>
+<p># Define the session and role session = sagemaker.Session() role = get_execution_role()</p>
+<p># Train a model estimator = sagemaker.estimator.Estimator(…) estimator.fit(…)</p>
+<p># Deploy the model predictor = estimator.deploy(initial_instance_count=1, instance_type=‘ml.m4.xlarge’) ```</p>
+<ol start="2" type="1">
+<li><p><strong>Invoke the Model from FastAPI</strong>: You can invoke the deployed model in your FastAPI app using the SageMaker <strong>Runtime API</strong>:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/predict"</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(data: YourDataSchema):</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    sagemaker_client <span class="op">=</span> boto3.client(<span class="st">'sagemaker-runtime'</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> sagemaker_client.invoke_endpoint(</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        EndpointName<span class="op">=</span><span class="st">'&lt;your-endpoint&gt;'</span>,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>        ContentType<span class="op">=</span><span class="st">'application/json'</span>,</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>        Body<span class="op">=</span>json.dumps(data.<span class="bu">dict</span>())</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="google-ai-platform" class="level4">
+<h4 class="anchored" data-anchor-id="google-ai-platform">Google AI Platform</h4>
+<p>GCP’s <strong>AI Platform</strong> offers tools for training and serving machine learning models. You can train a model in <strong>AI Platform</strong> and deploy it to a managed endpoint.</p>
+<ol type="1">
+<li><p><strong>Deploy Your Model</strong> to AI Platform:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> ai-platform models create model_name</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> ai-platform versions create version_name <span class="dt">\</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--model</span> model_name <span class="dt">\</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--origin</span> gs://path-to-your-model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Integrate with FastAPI</strong>: Use the GCP API to make predictions from your FastAPI app.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.cloud <span class="im">import</span> aiplatform</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/predict"</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(data: YourDataSchema):</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> aiplatform.gapic.PredictionServiceClient()</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> client.predict(endpoint<span class="op">=</span><span class="st">'&lt;your-endpoint&gt;'</span>, ...)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="azure-machine-learning-aml" class="level4">
+<h4 class="anchored" data-anchor-id="azure-machine-learning-aml">Azure Machine Learning (AML)</h4>
+<p><strong>Azure Machine Learning (AML)</strong> is another managed service that allows you to train and deploy ML models at scale.</p>
+<ol type="1">
+<li><p><strong>Deploy Your Model</strong> to Azure:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">az</span> ml model deploy <span class="at">-n</span> model_name <span class="at">-m</span> model.pkl <span class="at">--ic</span> inference_config.json <span class="at">--dc</span> deployment_config.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Call the Model from FastAPI</strong>:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="at">@app.post</span>(<span class="st">"/predict"</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(data: YourDataSchema):</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.post(<span class="st">'&lt;your-aml-endpoint&gt;'</span>, json<span class="op">=</span>data.<span class="bu">dict</span>())</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.json()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="in-summary" class="level2">
+<h2 class="anchored" data-anchor-id="in-summary">In Summary</h2>
+<p>Congratulations on completing the course!🎉</p>
+<p>You’ve just navigated through an exciting journey of deploying machine learning applications.</p>
+<p>Here’s a recap of what you’ve mastered:</p>
+<ul>
+<li><strong>Containerization with Docker</strong>: You learned how to package your applications into Docker containers, ensuring consistent and portable deployments across different environments.</li>
+<li><strong>CI/CD Pipelines with GitHub Actions</strong>: You explored the principles of Continuous Integration and Continuous Delivery (CI/CD), leveraging GitHub Actions to automate your deployment workflows and streamline your development process.</li>
+<li><strong>Heroku Deployment</strong>: You successfully deployed your applications to Heroku, making it simple to launch your projects into the cloud and manage them effortlessly.</li>
+<li><strong>Best Practices for Deployment</strong>: You discovered essential best practices to optimize, scale, and secure your deployments, ensuring that your applications perform well under pressure.</li>
+<li><strong>Advanced Tools and Technologies</strong>: You explored various cloud platforms like AWS, GCP, and Azure, delved into container orchestration with Kubernetes, and integrated with managed machine learning services to enhance your applications.</li>
+</ul>
+<p>With this knowledge, you are now equipped to deploy robust, scalable machine learning applications and take on any challenge in the tech universe. The journey doesn’t end here; keep experimenting, learning, and pushing the boundaries of what’s possible! 🚀</p>
+<p>It’s time to apply everything you’ve learned, take your applications to the next level, and impress the world with your data science skills.</p>
+<p>Now, let’s dive into the <strong><a href="../01_Exercises/03_Lab.html">Lab 3</a></strong></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Contenu adapté de <a href="https://sta210-s22.github.io/website/">STA 210: Regression Analysis</a><br> Tout le contenu est sous licence <i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-nc" aria-label="creative-commons-nc"></i> <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2024 par <a href="https://www.linkedin.com/in/menyssacherifaluron/">Ményssa Cherifa-Luron</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Fait avec <i class="fa-brands fa-python" aria-label="python"></i> et <a href="https://quarto.org/">Quarto</a><br> <a href="https://github.com/universdesdonnees/FASTAPICOURSE">Voir sur <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
