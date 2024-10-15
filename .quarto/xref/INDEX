@@ -1,0 +1,78 @@
+{
+  "00_Lectures/02_Lecture.qmd": {
+    "02_Lecture.html": "63edc975"
+  },
+  "00_Lectures/01_Lecture.qmd": {
+    "01_Lecture.html": "f9a20797",
+    "01_Lecture.tex": "0d9134d4"
+  },
+  "00_Lectures/03_Lecture.qmd": {
+    "03_Lecture.html": "5e427283",
+    "03_Lecture.tex": "496bb527"
+  },
+  "00_Lectures/index.qmd": {
+    "index.html": "ead02fb0"
+  },
+  "01_Exercices/01_Lab.qmd": {
+    "01_Lab.html": "6c7d8185"
+  },
+  "01_Exercices/02_Lab.qmd": {
+    "02_Lab.html": "ae7bbef4"
+  },
+  "01_Exercices/03_Lab.qmd": {
+    "03_Lab.html": "2da51305"
+  },
+  "01_Exercices/index.qmd": {
+    "index.html": "b3cacf07"
+  },
+  "02_Instructors/01_Lab_Solutions.qmd": {
+    "01_Lab_Solutions.html": "903ad954",
+    "01_Lab_Solutions.typ": "081efe8c"
+  },
+  "02_Instructors/02_Lab_Solutons.qmd": {
+    "02_Lab_Solutons.html": "5b67f2ae"
+  },
+  "02_Instructors/03_Lab_Solutions.qmd": {
+    "03_Lab_Solutions.html": "c6478351"
+  },
+  "02_Instructors/assessment_materials.qmd": {
+    "assessment_materials.html": "7623231e"
+  },
+  "02_Instructors/index.qmd": {
+    "index.html": "7f3b6d73"
+  },
+  "02_Instructors/instructors_notes.qmd": {
+    "instructors_notes.html": "a641f399"
+  },
+  "LICENSE-CC-BY-NC-ND-4.0.md": {
+    "LICENSE-CC-BY-NC-ND-4.0.html": "26c82691"
+  },
+  "Prerequisites.qmd": {
+    "Prerequisites.html": "7bd44cac"
+  },
+  "Syllabus.qmd": {
+    "Syllabus.html": "bf63e71a"
+  },
+  "index.qmd": {
+    "index.html": "efae2f35"
+  },
+  "01_Exercises/01_Lab.qmd": {
+    "01_Lab.html": "305e486a"
+  },
+  "01_Exercises/02_Lab.qmd": {
+    "02_Lab.html": "23df6ac6"
+  },
+  "01_Exercises/03_Lab.qmd": {
+    "03_Lab.html": "39214576"
+  },
+  "01_Exercises/index.qmd": {
+    "index.html": "653a34d7"
+  },
+  "02_Instructors/02_Lab_Solutions.qmd": {
+    "02_Lab_Solutions.html": "763e6f89"
+  },
+  "00_Lectures/lectures.qmd": {
+    "lectures.typ": "ffbe28c2",
+    "lectures.tex": "de8bd75d"
+  }
+}

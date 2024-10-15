@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ményssa Cherifa-Luron">
+<meta name="dcterms.date" content="2024-10-15">
+
+<title>FastAPICourse - Lab 2 - Building Scalable and Efficient FastAPI Applications</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_Exercises/index.html">Exercices</a></li><li class="breadcrumb-item"><a href="../01_Exercises/02_Lab.html">Lab 2</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/course_cover.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/universdesdonnees" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/menyssacherifaluron/" title="Menyssa's Linkedin" class="quarto-navigation-tool px-1" aria-label="Menyssa's Linkedin"><i class="bi bi-linkedin"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Course information</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Lectures</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/01_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Introduction to FastAPI &amp; Development Setup</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/02_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Building Scalable and Efficient FastAPI Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Lectures/03_Lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Deployment and Production Considerations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Exercices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/01_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/02_Lab.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lab 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_Exercises/03_Lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Instructors</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_Instructors/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
+  <li><a href="#marketing-agency-api" id="toc-marketing-agency-api" class="nav-link" data-scroll-target="#marketing-agency-api">Marketing Agency API</a>
+  <ul class="collapse">
+  <li><a href="#key-features" id="toc-key-features" class="nav-link" data-scroll-target="#key-features">Key Features</a></li>
+  <li><a href="#project-structure" id="toc-project-structure" class="nav-link" data-scroll-target="#project-structure">Project structure</a></li>
+  <li><a href="#implementation-steps" id="toc-implementation-steps" class="nav-link" data-scroll-target="#implementation-steps">Implementation Steps</a></li>
+  </ul></li>
+  <li><a href="#healthcare-management-api" id="toc-healthcare-management-api" class="nav-link" data-scroll-target="#healthcare-management-api">Healthcare Management API</a>
+  <ul class="collapse">
+  <li><a href="#key-features-1" id="toc-key-features-1" class="nav-link" data-scroll-target="#key-features-1">Key Features</a></li>
+  <li><a href="#project-structure-1" id="toc-project-structure-1" class="nav-link" data-scroll-target="#project-structure-1">Project Structure</a></li>
+  <li><a href="#implementation-steps-1" id="toc-implementation-steps-1" class="nav-link" data-scroll-target="#implementation-steps-1">Implementation Steps</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_Exercises/index.html">Exercices</a></li><li class="breadcrumb-item"><a href="../01_Exercises/02_Lab.html">Lab 2</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lab 2 - Building Scalable and Efficient FastAPI Applications</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ményssa Cherifa-Luron </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 15, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>In this notebook, you will create two distinct APIs, each tailored for different industries:</p>
+<ul>
+<li><p><strong>Marketing Agency API</strong>: This API will help manage clients and their marketing campaigns for a fictional agency. You’ll handle client requests, campaign management, performance tracking, and secure sensitive data. The API will be designed to scale, allowing you to efficiently manage multiple clients and campaigns simultaneously.</p></li>
+<li><p><strong>Healthcare Management API</strong>: This API is designed to manage patient records, doctor schedules, medical appointments, and prescriptions. The project will emphasize integrating external APIs, handling real-time data, and ensuring compliance with healthcare regulations.</p></li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Note">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Healthcare Management API project is optional and intended for students who feel comfortable taking on an additional challenge</p>
+</div>
+</div>
+</div>
+</section>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p>By the end of this lab, you should be able to:</p>
+<ol type="1">
+<li>Use <strong>asynchronous programming</strong> to improve performance when handling multiple client requests.</li>
+<li>Create <strong>CRUD routes</strong> to manage clients and their marketing campaigns.</li>
+<li>Integrate a <strong>database</strong> to store client and campaign information.</li>
+<li>Apply <strong>dependency injection</strong> to keep your code modular.</li>
+<li>Write tests using <strong><code>pytest</code></strong> to verify that your client operations work as expected.</li>
+<li>Secure sensitive <strong>client data</strong> using authentication and authorization. (optional)</li>
+<li>Use <strong>performance optimization</strong> techniques to make your API efficient under high loads.(optional)</li>
+</ol>
+</section>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<p>Ensure you have FastAPI, SQLAlchemy (or SQLModel), Pydantic, and other necessary libraries installed. You’ll also need access to Python and a terminal.</p>
+</section>
+<section id="marketing-agency-api" class="level2">
+<h2 class="anchored" data-anchor-id="marketing-agency-api">Marketing Agency API</h2>
+<section id="key-features" class="level3">
+<h3 class="anchored" data-anchor-id="key-features">Key Features</h3>
+<ol type="1">
+<li><p><strong>Client Management</strong>:</p>
+<ul>
+<li>Create, update, and delete client profiles.</li>
+<li>Store client-specific information such as contact details and preferences.</li>
+</ul></li>
+<li><p><strong>Campaign Management</strong>:</p>
+<ul>
+<li>Create and manage marketing campaigns for clients.</li>
+<li>Track campaign performance metrics and budget allocations.</li>
+</ul></li>
+<li><p><strong>Database Integration</strong>:</p>
+<ul>
+<li>Utilize SQLAlchemy for ORM and database management.</li>
+<li>Support for SQLite with easy migration to other databases if needed.</li>
+</ul></li>
+<li><p><strong>Fake Data Generation</strong>: Populate the database with synthetic data for testing purposes using Faker.</p></li>
+<li><p><strong>API Testing</strong>:</p>
+<ul>
+<li>Comprehensive test suite using <code>pytest</code> to ensure reliability.</li>
+<li>Test coverage for all major CRUD operations and business logic.</li>
+</ul></li>
+</ol>
+</section>
+<section id="project-structure" class="level3">
+<h3 class="anchored" data-anchor-id="project-structure">Project structure</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MARKETING</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> .venv/</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> app/</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── test/</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── __init__.py</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── test_unit.py</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── __init__.py</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── campaign_routes.py</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── client_routes.py</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── database.py</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── generate_fake_data.py</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── main.py</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── models.py</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── schemas.py</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> env/</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> prod.db</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="implementation-steps" class="level3">
+<h3 class="anchored" data-anchor-id="implementation-steps">Implementation Steps</h3>
+<section id="app__init__.py" class="level4">
+<h4 class="anchored" data-anchor-id="app__init__.py">1. <code>app/__init__.py</code></h4>
+<p>Leave this file empty or add package-level documentation.</p>
+</section>
+<section id="appmodels.py" class="level4">
+<h4 class="anchored" data-anchor-id="appmodels.py">2. <code>app/models.py</code></h4>
+<p>Define the database structure using SQLAlchemy models for <code>Client</code> and <code>Campaign</code>.</p>
+<ol type="1">
+<li><strong>Import Necessary Components</strong>:
+<ul>
+<li>Import <code>Column</code>, <code>Integer</code>, <code>String</code>, <code>ForeignKey</code>, <code>DateTime</code>, <code>JSON</code>, <code>relationship</code> from SQLAlchemy.</li>
+<li>Import <code>Base</code> from your database setup file.</li>
+</ul></li>
+<li><strong>Define the <code>Client</code> Class</strong>:
+<ul>
+<li>Set <code>__tablename__ = "clients"</code> to specify the table name.</li>
+<li>Define columns:
+<ul>
+<li><code>id</code>: Primary key, integer, indexed.</li>
+<li><code>name</code>: String, indexed.</li>
+<li><code>email</code>: Unique string, indexed.</li>
+</ul></li>
+<li>Define a relationship with <code>Campaign</code>:
+<ul>
+<li><code>campaigns = relationship("Campaign", back_populates="client")</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Define the <code>Campaign</code> Class</strong>:
+<ul>
+<li>Set <code>__tablename__ = "campaigns"</code> to specify the table name.</li>
+<li>Define columns:
+<ul>
+<li><code>id</code>: Primary key, integer, indexed.</li>
+<li><code>campaign_name</code>: String, indexed.</li>
+<li><code>description</code>: String for campaign description.</li>
+<li><code>start_date</code>: DateTime for when the campaign starts.</li>
+<li><code>budget</code>: Integer for campaign budget.</li>
+<li><code>performance_metrics</code>: JSON for storing metrics.</li>
+<li><code>canal</code>: String</li>
+<li><code>client_id</code>: Foreign key referencing <code>clients.id</code>.</li>
+</ul></li>
+<li>Define a relationship with <code>Client</code>:
+<ul>
+<li><code>client = relationship("Client", back_populates="campaigns")</code>.</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="appschemas.py" class="level4">
+<h4 class="anchored" data-anchor-id="appschemas.py">3. <code>app/schemas.py</code></h4>
+<p>Create Pydantic models for validating request and response data.</p>
+<ol type="1">
+<li><strong>Import BaseModel</strong>:
+<ul>
+<li>Import <code>BaseModel</code> from Pydantic.</li>
+</ul></li>
+<li><strong>Define <code>ClientSchema</code></strong>:
+<ul>
+<li>Create a class <code>ClientBase</code> inheriting from <code>BaseModel</code> with fields:
+<ul>
+<li><code>name</code>: String.</li>
+<li><code>email</code>: String.</li>
+</ul></li>
+<li>Create a class <code>ClientCreate</code> inheriting from <code>ClientBase</code> for creation-specific validation.</li>
+</ul></li>
+<li><strong>Define <code>Client</code></strong>:
+<ul>
+<li>Create a class <code>Client</code> inheriting from <code>ClientBase</code> with an additional field:
+<ul>
+<li><code>id</code>: Integer.</li>
+</ul></li>
+<li>Add <code>Config</code> class inside to enable ORM mode: <code>orm_mode = True</code>.</li>
+</ul></li>
+<li><strong>Define <code>CampaignSchema</code></strong>:
+<ul>
+<li>Create a class <code>CampaignBase</code> inheriting from <code>BaseModel</code> with fields:
+<ul>
+<li><code>campaign_name</code>: String.</li>
+<li><code>description</code>: String.</li>
+<li><code>start_date</code>: DateTime.</li>
+<li><code>budget</code>: Integer.</li>
+<li><code>performance_metrics</code>: JSON.</li>
+<li><code>canal</code>: canal: List[Literal[‘internet’, ‘tv’, ‘radio’]].</li>
+</ul></li>
+<li>Create a class <code>CampaignCreate</code> inheriting from <code>CampaignBase</code> for creation-specific validation.</li>
+</ul></li>
+<li><strong>Define <code>Campaign</code></strong>:
+<ul>
+<li>Create a class <code>Campaign</code> inheriting from <code>CampaignBase</code> with additional fields:
+<ul>
+<li><code>id</code>: Integer.</li>
+<li><code>client_id</code>: Integer.</li>
+</ul></li>
+<li>Add <code>Config</code> class inside to enable ORM mode: <code>orm_mode = True</code>.</li>
+</ul></li>
+</ol>
+</section>
+<section id="appdatabase.py" class="level4">
+<h4 class="anchored" data-anchor-id="appdatabase.py">4. <code>app/database.py</code></h4>
+<p>Set up database configuration and connection.</p>
+<ol type="1">
+<li><strong>Import Necessary Components</strong>:
+<ul>
+<li>Import <code>create_engine</code>, <code>sessionmaker</code>, and <code>declarative_base</code> from SQLAlchemy.</li>
+</ul></li>
+<li><strong>Configure Database</strong>:
+<ul>
+<li>Define the database URL using SQLite : DATABASE_URL = “sqlite:///./prod.db”</li>
+<li>Create a database engine and session local.</li>
+<li>Define a <code>Base</code> class for model definitions.</li>
+</ul></li>
+</ol>
+</section>
+<section id="appgenerate_fake_data.py" class="level4">
+<h4 class="anchored" data-anchor-id="appgenerate_fake_data.py">5. <code>app/generate_fake_data.py</code></h4>
+<p>Populate the database with fake data for testing.</p>
+<ol type="1">
+<li><strong>Install Faker</strong>:
+<ul>
+<li>Run <code>pip install faker</code>.</li>
+</ul></li>
+<li><strong>Generate Data</strong>:
+<ul>
+<li>Import Faker and create an instance.</li>
+<li>Generate sample data for 10 clients and 20 campaigns (2 campaigns/client)</li>
+<li>Insert this data into the database using SQLAlchemy.</li>
+</ul></li>
+</ol>
+</section>
+<section id="appcampaign_routes.py" class="level4">
+<h4 class="anchored" data-anchor-id="appcampaign_routes.py">6. <code>app/campaign_routes.py</code></h4>
+<p>Define API routes for managing campaigns.</p>
+<ol type="1">
+<li><strong>Import Necessary Components</strong>:
+<ul>
+<li>Import <code>APIRouter</code> from FastAPI.</li>
+</ul></li>
+<li><strong>Set Up CRUD Operations</strong>:
+<ul>
+<li>Define routes for creating, reading, updating, and deleting campaigns.</li>
+<li>Include additional routes for pausing and terminating campaigns.</li>
+<li>Use dependency injection to access the database session.</li>
+</ul></li>
+</ol>
+</section>
+<section id="appclient_routes.py" class="level4">
+<h4 class="anchored" data-anchor-id="appclient_routes.py">7. <code>app/client_routes.py</code></h4>
+<p>Define API routes for managing clients.</p>
+<ol type="1">
+<li><strong>Import Necessary Components</strong>:
+<ul>
+<li>Import <code>APIRouter</code> from FastAPI.</li>
+</ul></li>
+<li><strong>Set Up CRUD Operations</strong>:
+<ul>
+<li>Define routes for creating, reading, updating, and deleting clients.</li>
+<li>Use dependency injection to access the database session.</li>
+</ul></li>
+</ol>
+</section>
+<section id="appmain.py" class="level4">
+<h4 class="anchored" data-anchor-id="appmain.py">8. <code>app/main.py</code></h4>
+<p>Initialize the FastAPI application, include routers, and define application startup and shutdown behavior.</p>
+<ol type="1">
+<li>Import Required Modules:</li>
+</ol>
+<ul>
+<li>Import <code>FastAPI</code> from FastAPI.</li>
+<li>Import <code>APIRouter</code> from <code>client_routes.py</code> and <code>campaign_routes.py</code>.</li>
+<li>Import <code>asynccontextmanager</code> from <code>contextlib</code> for managing startup and shutdown tasks.</li>
+<li>Import <code>generate_fake_data</code> from <code>generate_fake_data.py</code>.</li>
+</ul>
+<ol start="2" type="1">
+<li>Initialize FastAPI with a lifespan context manager:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> FastAPI(lifespan<span class="op">=</span>lifespan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li>Add the client and campaign routers to the FastAPI instance:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>app.include_router(client_router, prefix<span class="op">=</span><span class="st">"/clients"</span>, tags<span class="op">=</span>[<span class="st">"Clients"</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>app.include_router(campaign_router, prefix<span class="op">=</span><span class="st">"/campaigns"</span>, tags<span class="op">=</span>[<span class="st">"Campaigns"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="4" type="1">
+<li>Use the <code>@asynccontextmanager</code> decorator to define startup and shutdown logic:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="at">@asynccontextmanager</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">async</span> <span class="kw">def</span> lifespan(app: FastAPI):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Startup logic</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Generating fake data during startup..."</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    generate_fake_data()  <span class="co"># Ensure this runs during startup</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">yield</span>  <span class="co"># Pass control to the rest of the app</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shutdown logic can be added here if needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="apptesttest_unit.py" class="level4">
+<h4 class="anchored" data-anchor-id="apptesttest_unit.py">10. <code>app/test/test_unit.py</code></h4>
+<p>Test the API endpoints for clients and campaigns to ensure they perform CRUD operations correctly.</p>
+<ol type="1">
+<li><strong>Import Required Modules</strong>:
+<ul>
+<li>Import <code>pytest</code> for testing framework functionalities.</li>
+<li>Import <code>TestClient</code> from <code>fastapi.testclient</code> to simulate HTTP requests to the FastAPI app.</li>
+<li>Import <code>create_engine</code> and <code>sessionmaker</code> from <code>sqlalchemy</code> for database connections.</li>
+<li>Import <code>SQLModel</code> and <code>Session</code> from <code>sqlmodel</code>.</li>
+<li>Import <code>StaticPool</code> from <code>sqlmodel.pool</code> to manage SQLite in-memory database.</li>
+</ul></li>
+<li><strong>Import Your App and Models</strong>:
+<ul>
+<li>Import the FastAPI app from <code>app.main</code>.</li>
+<li>Import <code>get_db</code>, <code>engine</code>, and <code>Base</code> from <code>app.database</code>.</li>
+<li>Import <code>Client</code> and <code>Campaign</code> models from <code>app.models</code>.</li>
+</ul></li>
+<li><strong>Set Up Test Database</strong>:
+<ul>
+<li><p>Create an in-memory SQLite database for testing:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>test_engine <span class="op">=</span> create_engine(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sqlite://"</span>, connect_args<span class="op">=</span>{<span class="st">"check_same_thread"</span>: <span class="va">False</span>}, poolclass<span class="op">=</span>StaticPool</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Define a <code>SessionLocal</code> session factory bound to <code>test_engine</code>.</p></li>
+</ul></li>
+<li><strong>Create Database Tables</strong>:
+<ul>
+<li>Use <code>Base.metadata.create_all(bind=test_engine)</code> to create tables.</li>
+</ul></li>
+<li><strong>Define Fixtures</strong>:
+<ul>
+<li><strong>Session Fixture</strong>:
+<ul>
+<li><p>Create a fresh database session for each test:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(name<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> session_fixture():</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    Base.metadata.create_all(bind<span class="op">=</span>test_engine)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> Session(test_engine) <span class="im">as</span> session:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> session</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    Base.metadata.drop_all(bind<span class="op">=</span>test_engine)  <span class="co"># Clean up after tests</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li><strong>Client Fixture</strong>:
+<ul>
+<li><p>Override the default database session with the test session:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(name<span class="op">=</span><span class="st">"client"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> client_fixture(session: Session):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_session_override():</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> session</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    app.dependency_overrides[get_db] <span class="op">=</span> get_session_override</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> TestClient(app)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">yield</span> client</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    app.dependency_overrides.clear()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+</ul></li>
+<li><strong>One example : Test Create Client</strong>:</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_create_client(client: TestClient):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  response <span class="op">=</span> client.post(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/clients/"</span>, json<span class="op">=</span>{<span class="st">"name"</span>: <span class="st">"Test Client"</span>, <span class="st">"email"</span>: <span class="st">"test1@example.com"</span>}</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  data <span class="op">=</span> response.json()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> response.status_code <span class="op">==</span> <span class="dv">200</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> data[<span class="st">"name"</span>] <span class="op">==</span> <span class="st">"Test Client"</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> data[<span class="st">"email"</span>] <span class="op">==</span> <span class="st">"test1@example.com"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> data[<span class="st">"id"</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Do the same for all clients endpoints</strong></p>
+<ol start="7" type="1">
+<li><strong>Run <code>pytest</code></strong> in the terminal from the project root to execute tests.</li>
+</ol>
+</section>
+<section id="requirements.txt" class="level4">
+<h4 class="anchored" data-anchor-id="requirements.txt">11. <code>requirements.txt</code></h4>
+<p>Use <code>pip freeze &gt; requirements.txt</code> after installing packages.</p>
+</section>
+<section id="go-further-implement-security" class="level4">
+<h4 class="anchored" data-anchor-id="go-further-implement-security">12. Go Further : Implement Security</h4>
+<p>Secure the application by implementing authentication and authorization.</p>
+<ol type="1">
+<li><strong>Explore FastAPI Security</strong>:
+<ul>
+<li>Visit the FastAPI security tutorial: <a href="https://fastapi.tiangolo.com/tutorial/security/">FastAPI Security Documentation</a>.</li>
+</ul></li>
+<li><strong>Implement OAuth2 with Password (and hashing)</strong>:
+<ul>
+<li>Use <code>fastapi.security</code> to implement OAuth2 with password hashing.</li>
+<li>Set up a <code>get_current_user</code> dependency to secure routes.</li>
+<li>Define a <code>User</code> model for managing users and credentials.</li>
+</ul></li>
+<li><strong>Add JWT Authentication</strong>:
+<ul>
+<li>Use <code>python-jose</code> for JWT token management.</li>
+<li>Secure routes by requiring valid tokens for access.</li>
+</ul></li>
+<li><strong>Role-Based Access Control (RBAC)</strong>:
+<ul>
+<li>Implement roles (e.g., admin, user) to control access to specific endpoints.</li>
+<li>Use role checks in your route dependencies.</li>
+</ul></li>
+<li><strong>Test Security Features</strong>:
+<ul>
+<li>Write tests to ensure that unauthorized users cannot access protected endpoints.</li>
+<li>Verify that users with valid tokens have the correct permissions.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="healthcare-management-api" class="level2">
+<h2 class="anchored" data-anchor-id="healthcare-management-api">Healthcare Management API</h2>
+<section id="key-features-1" class="level3">
+<h3 class="anchored" data-anchor-id="key-features-1">Key Features</h3>
+<ul>
+<li><strong>Patient Management</strong>: Create and manage patient profiles, including medical history and contact information.</li>
+<li><strong>Doctor Schedule</strong>: Organize and update doctor availability and appointments.</li>
+<li><strong>Appointment Booking</strong>: Allow patients to book, update, or cancel appointments.</li>
+<li><strong>Prescription Management</strong>: Track prescriptions, refills, and pharmacy interactions.</li>
+<li><strong>Secure Data Handling</strong>: Implement role-based access control and data encryption for patient confidentiality.</li>
+<li><strong>Integration with External APIs</strong>: Connect with third-party services for additional functionalities like pharmacy networks or insurance verification.</li>
+<li><strong>Real-Time Notifications</strong>: Implement WebSocket or similar technology for real-time updates on appointments and prescriptions.</li>
+</ul>
+</section>
+<section id="project-structure-1" class="level3">
+<h3 class="anchored" data-anchor-id="project-structure-1">Project Structure</h3>
+<pre><code>HEALTHCARE
+│
+├── .venv/
+│
+├── app/
+│   ├── __pycache__/
+│   ├── test/
+│   │   ├── __pycache__/
+│   │   ├── __init__.py
+│   │   └── test_unit.py
+│   │
+│   ├── __init__.py
+│   ├── appointment_routes.py
+│   ├── doctor_routes.py
+│   ├── patient_routes.py
+│   ├── prescription_routes.py
+│   ├── database.py
+│   ├── external_api.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
+│
+├── env/
+│
+├── prod.db
+│
+└── requirements.txt</code></pre>
+</section>
+<section id="implementation-steps-1" class="level3">
+<h3 class="anchored" data-anchor-id="implementation-steps-1">Implementation Steps</h3>
+<ol type="1">
+<li><strong>Set Up Project Environment</strong>:
+<ul>
+<li>Create a virtual environment and install necessary packages (<code>fastapi</code>, <code>uvicorn</code>, <code>sqlalchemy</code>, <code>pydantic</code>, <code>python-jose[cryptography]</code>, <code>websockets</code>).</li>
+</ul></li>
+<li><strong>Design Database Models</strong>:
+<ul>
+<li>Define models for <code>Patient</code>, <code>Doctor</code>, <code>Appointment</code>, and <code>Prescription</code> using SQLAlchemy.</li>
+</ul></li>
+</ol>
+<p><code>Patient</code> Model</p>
+<ul>
+<li><code>id</code>: Integer, primary key</li>
+<li><code>name</code>: String, indexed</li>
+<li><code>age</code>: Integer</li>
+<li><code>gender</code>: String</li>
+<li><code>medical_history</code>: Text</li>
+</ul>
+<p><code>Doctor</code> Model</p>
+<ul>
+<li><code>id</code>: Integer, primary key</li>
+<li><code>name</code>: String, indexed</li>
+<li><code>specialty</code>: String</li>
+<li><code>contact_info</code>: String</li>
+</ul>
+<p><code>Appointment</code> Model</p>
+<ul>
+<li><code>id</code>: Integer, primary key</li>
+<li><code>appointment_date</code>: DateTime</li>
+<li><code>patient_id</code>: Integer, ForeignKey</li>
+<li><code>doctor_id</code>: Integer, ForeignKey</li>
+<li><code>status</code>: String</li>
+</ul>
+<p><code>Prescription</code> Model</p>
+<ul>
+<li><code>id</code>: Integer, primary key</li>
+<li><code>medication_name</code>: String</li>
+<li><code>dosage</code>: String</li>
+<li><code>patient_id</code>: Integer, ForeignKey</li>
+<li><code>doctor_id</code>: Integer, ForeignKey</li>
+<li><code>instructions</code>: Text</li>
+</ul>
+<ol start="3" type="1">
+<li><strong>Create Pydantic Schemas</strong>:
+<ul>
+<li>Design schemas for data validation and serialization.</li>
+</ul></li>
+<li><strong>Implement CRUD Operations</strong>:
+<ul>
+<li>Develop routes for managing patients, doctors, appointments, and prescriptions.</li>
+</ul></li>
+<li><strong>Secure the API</strong>:
+<ul>
+<li>Implement JWT authentication and role-based access control (RBAC).</li>
+</ul></li>
+<li><strong>Integrate External APIs</strong>:
+<ul>
+<li>Set up connections to pharmacy networks, insurance companies, or other relevant services.</li>
+</ul></li>
+<li><strong>Real-Time Data Handling</strong>:
+<ul>
+<li>Use WebSocket for notifications about appointment changes or prescription updates.</li>
+</ul></li>
+<li><strong>Testing</strong>:
+<ul>
+<li>Write unit and integration tests to ensure all functionalities work as expected.</li>
+</ul></li>
+<li><strong>Documentation</strong>:
+<ul>
+<li>Provide comprehensive API documentation using FastAPI’s built-in tools.</li>
+</ul></li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Contenu adapté de <a href="https://sta210-s22.github.io/website/">STA 210: Regression Analysis</a><br> Tout le contenu est sous licence <i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-nc" aria-label="creative-commons-nc"></i> <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International license (CC BY-NC 4.0)</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2024 par <a href="https://www.linkedin.com/in/menyssacherifaluron/">Ményssa Cherifa-Luron</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Fait avec <i class="fa-brands fa-python" aria-label="python"></i> et <a href="https://quarto.org/">Quarto</a><br> <a href="https://github.com/universdesdonnees/FASTAPICOURSE">Voir sur <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
