@@ -7,7 +7,7 @@ date: today
 
 ## Overview
 
-In this lab, students will delve into the deployment and enhancement of FastAPI applications, focusing on practical applications in machine learning, image processing, and social media interaction. 
+In this lab, students will delve into the deployment and enhancement of FastAPI applications, focusing on practical applications in machine learning and social media interaction. 
 
 This lab will not only teach students how to build and deploy an API but also how to extend its functionality and make it robust and scalable.
 
